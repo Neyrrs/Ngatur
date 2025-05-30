@@ -17,7 +17,7 @@ const Register = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("/api/siswa/register", {
+      const response = await axios.post("/api/user/register", {
         username: username,
         password: password,
       });

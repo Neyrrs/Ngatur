@@ -2,8 +2,23 @@
 
 import { Wallet, TabletSmartphone, Calendar1 } from "lucide-react";
 import MainCard from "@/components/layout/cards/MainCard";
+// import { useEffect } from "react";
+// import axios from "axios";
 
 export default function Home() {
+  //  useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await axios.get("/api/user/user");
+  //       console.log(response.data);
+  //       console.log("User data:", response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching user:", error);
+  //     }
+  //   };
+
+  //   fetchUser(); // panggil saat komponen render pertama kali
+  // }, []);
   return (
     <>
       <div className="w-screen bg-[#EFEFEF] px-15 h-screen text-black flex-col flex mt-15">
