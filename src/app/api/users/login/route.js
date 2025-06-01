@@ -11,20 +11,21 @@ export async function POST(req) {
 
     const searchAccount = await con.query(
       `select * from users where username = $1 and password = $2`,
-      [data.username, data.password]
+      [data?.username, data?.password]
     );
 
     if (searchAccount.rows.length == 0) {
       throw new Error("Akun tidak ditemukan");
     }
-    const token = jwt.sign(user, jwtSecret, {
-      expiresIn: "1h",
-    });
+
     const jwtSecret = process.env.JWT_SECRET;
     const user = {
       id: searchAccount.rows[0].id,
       username: searchAccount.rows[0].username,
     };
+    const token = jwt.sign(user, jwtSecret, {
+      expiresIn: "1h",
+    });
 
     cookies().set("token", token, {
       httpOnly: true,

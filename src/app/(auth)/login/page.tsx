@@ -2,18 +2,16 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import { Package } from "lucide-react";
-import {FormInput, PrimaryButton} from "@/components/ui";
+import { Lock, Package, User } from "lucide-react";
+import { PrimaryButton } from "@/components/ui";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import DynamicIconInput from "@/components/fragments/inputs/DynamicIconInput";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useRouter()
-
-  const hanldeSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
@@ -22,8 +20,9 @@ const Login = () => {
         password: password,
       });
 
-      if(response.status === 202)
-      navigate.replace('/')
+      if (response.status === 202) {
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("Gagal login:", error.response?.data || error.message);
     }
@@ -37,27 +36,45 @@ const Login = () => {
         <p className="mb-3 text-xs">Sign in to your account</p>
 
         <form
-          onSubmit={hanldeSubmit}
           className="flex flex-col w-full h-full gap-2"
+          onSubmit={handleSubmit}
         >
           <label htmlFor="username">
             Username
-            <FormInput
+            <DynamicIconInput
+              icon={
+                <User width={30} height={30} className="px-1" color="#A62C2C" />
+              }
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Nama Lengkap"
+              value={username}
+              placeholder="Username"
               type="text"
             />
           </label>
           <label htmlFor="password" className="mb-2">
             Password
-            <FormInput
+            <DynamicIconInput
+              icon={
+                <Lock width={30} height={30} className="px-1" color="#A62C2C" />
+              }
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              value={password}
               type="password"
             />
           </label>
-          <PrimaryButton width="px-2" height="py-1" text="Login" onClick={hanldeSubmit}/>
-          <p className="text-xs text-center">Don`t have an account? <Link href={"/register"} className="underline text-[#A62C2C]">Sign up</Link></p>
+          <PrimaryButton
+            width="px-2"
+            height="py-1"
+            text="Login"
+            onClick={handleSubmit}
+          />
+          <p className="text-xs text-center">
+            Don`t have an account?{" "}
+            <Link href={"/register"} className="underline text-[#A62C2C]">
+              Sign up
+            </Link>
+          </p>
         </form>
       </div>
     </div>

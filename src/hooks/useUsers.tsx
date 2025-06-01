@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function useUsers() {
-  const [users, setUsers] = useState<any[]>([]);
+export default function useUser() {
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUser = async () => {
       try {
         const res = await axios.get("/api/user");
-        setUsers(res?.data?.user);
+        setUser(res?.data?.user);
       } catch (err) {
         setError(err.message || "Gagal mengambil data user");
       } finally {
@@ -20,8 +20,8 @@ export default function useUsers() {
       }
     };
 
-    fetchUsers();
+    fetchUser();
   }, []);
 
-  return { users, loading, error };
+  return { user, loading, error };
 }

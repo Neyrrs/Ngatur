@@ -5,7 +5,7 @@ import MainCard from "@/components/layout/cards/MainCard";
 import useUsers from "@/hooks/useUsers";
 
 export default function Home() {
-  const { users, loading } = useUsers();
+  const { user, loading } = useUsers();
 
   if (loading) return <div>Loading...</div>;
   return (
@@ -15,7 +15,7 @@ export default function Home() {
           <div className="py-10 flex-col flex gap-2">
             <h1 className="text-5xl font-semibold">
               Welcome back,{" "}
-              <span className="text-[#A62C2C]">{users?.username}</span>!
+              <span className="text-[#A62C2C]">{user?.username}</span>!
             </h1>
             <p className="text-2xl font-normal">
               Let`s start to manage ur life
