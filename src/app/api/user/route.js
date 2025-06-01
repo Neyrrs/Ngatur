@@ -1,22 +1,26 @@
-import { pool } from "../../../libs/postgreSql";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
 export async function GET() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  const secret = process.env.JWT_SECRET;
+
+  if (!token || !secret) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const con = await pool.connect();
-    const resultQuery = await con.query("select id, username from users");
+    const decoded = jwt.verify(token, secret);
 
-    con.release();
-    if (resultQuery < 0) return new Error("Gagal mengambil data akun");
+    return NextResponse.json({
+      message: "User verified",
+      user: decoded, 
+    });
 
-    return new Response(
-      JSON.stringify({message: "Data berhasil diambil!", data: resultQuery.rows}),
-      {
-        status: 200,
-      }
-    );
-  } catch (error) {
-    return new Response(JSON.stringify({message: `Gagal mengambil data: ${error}`}), {
-        status: 500
-    })
+  } catch (err) {
+    return NextResponse.json({ message: "Invalid or expired token" }, { status: 401 });
   }
 }

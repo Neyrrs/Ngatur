@@ -1,8 +1,14 @@
+"use client"
+
 import React from "react";
 import { Package } from "lucide-react";
 import Link from "next/link";
+import useUsers from "@/hooks/useUsers";
 
 const NavigationBar = () => {
+  const {users, loading} = useUsers()
+
+  if(loading) return <div>Loading</div>;
   return (
     <div className="fixed top-0 w-screen">
       <div className="flex bg-[#222831] text-white w-full h-15 items-center px-15 justify-between">
@@ -11,7 +17,7 @@ const NavigationBar = () => {
           <p className="text-2xl font-medium">Ngatur</p>
         </Link>
         <Link href={"/profile"} className="flex gap-5 items-center">
-          <p className="text-lg font-medium">David </p>
+          <p className="text-lg font-medium">{users?.username} </p>
           <div className="h-8 w-8 bg-white rounded-full"></div>
         </Link>
       </div>

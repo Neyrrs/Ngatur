@@ -6,21 +6,18 @@ import { Package } from "lucide-react";
 import {FormInput, PrimaryButton} from "@/components/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useUsers from "@/hooks/useUsers";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const {users } = useUsers();
-  console.log(users)
   const navigate = useRouter()
 
   const hanldeSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("/api/user/login", {
+      const response = await axios.post("/api/users/login", {
         username: username,
         password: password,
       });

@@ -7,8 +7,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
   weight: "500",
-  
-})
+});
 
 export const metadata: Metadata = {
   title: "Ngatur",

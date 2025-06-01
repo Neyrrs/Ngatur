@@ -12,7 +12,7 @@ export default function useUsers() {
     const fetchUsers = async () => {
       try {
         const res = await axios.get("/api/user");
-        setUsers(res.data);
+        setUsers(res?.data?.user);
       } catch (err) {
         setError(err.message || "Gagal mengambil data user");
       } finally {

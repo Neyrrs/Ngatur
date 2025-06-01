@@ -14,25 +14,24 @@ export async function POST(req) {
       [data.username, data.password]
     );
 
+    if (searchAccount.rows.length == 0) {
+      throw new Error("Akun tidak ditemukan");
+    }
+    const token = jwt.sign(user, jwtSecret, {
+      expiresIn: "1h",
+    });
     const jwtSecret = process.env.JWT_SECRET;
     const user = {
       id: searchAccount.rows[0].id,
       username: searchAccount.rows[0].username,
     };
-    const token = jwt.sign(user, jwtSecret, {
-      expiresIn: "1h",
-    });
 
     cookies().set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      maxAge: 3600000, 
+      maxAge: 3600000,
     });
-
-    if (searchAccount.rows.length == 0) {
-      throw new Error("Akun tidak ditemukan");
-    }
 
     con.release();
 
@@ -41,7 +40,10 @@ export async function POST(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.log("Request error: ", error);
+    return new Response(JSON.stringify({ message: error }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   } finally {
   }
 }
