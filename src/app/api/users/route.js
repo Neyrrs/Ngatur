@@ -1,22 +1,25 @@
-import { pool } from "../../../libs/postgreSql";
+import { supabase } from "../../../libs/supabase";
+import { NextResponse } from "next/server";
 
 export async function GET() {
+  const { data, error } = await supabase.from("users").select("*");
+
+  if (error)
+    return new NextResponse.json({ message: error.message }, { status: 500 });
+  return new NextResponse(data);
+}
+
+export async function POST(req) {
+  const { data, error } = await supabase();
   try {
-    const con = await pool.connect();
-    const resultQuery = await con.query("select id, username from users");
+    const body = await req.json();
+    const { username, password } = body
+      .from("users")
+      .insert([{ username, password }]);
 
-    con.release();
-    if (resultQuery < 0) return new Error("Gagal mengambil data akun");
-
-    return new Response(
-      JSON.stringify({message: "Data berhasil diambil!", data: resultQuery.rows}),
-      {
-        status: 200,
-      }
-    );
-  } catch (error) {
-    return new Response(JSON.stringify({message: `Gagal mengambil data: ${error}`}), {
-        status: 500
-    })
+    return new NextResponse({ data: data }, { status: 201 });
+  } catch {
+    return new Response.json({ message: error.message }, { status: 500 });
+    // return new NextResponse.json({ error: error }, { status: 500 });
   }
 }
