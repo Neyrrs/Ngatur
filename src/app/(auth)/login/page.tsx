@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Lock, Package, User } from "lucide-react";
 import { PrimaryButton } from "@/components/ui";
 import Link from "next/link";
 import DynamicIconInput from "@/components/fragments/inputs/DynamicIconInput";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -21,12 +22,28 @@ const Login = () => {
       });
 
       if (response.status === 202) {
-        window.location.href = "/";
+        Swal.fire({
+          icon: "success",
+          title: "Login Success",
+          text: `Welcome ${username}`,
+        }).then(() => {
+          window.location.href = "/";
+        });
+      }
+
+      if (response.status === 500) {
+        throw new Error("Login Failed: Account not found");
       }
     } catch (error) {
-      console.error("Gagal login:", error.response?.data || error.message);
+      Swal.fire({
+        title: "Login Failed",
+        icon: "error",
+        text: "Incorrect username or password",
+      });
     }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div className="h-screen w-screen bg-[#EFEFEF] flex items-center justify-center">

@@ -1,50 +1,37 @@
-import { pool } from "../../../../libs/postgreSql";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { supabase } from "../../../../libs/supabase";
+import jwt from "jsonwebtoken"
+
+const JWT_SECRET = process.env.JWT_SECRET
 
 export async function POST(req) {
-  try {
-    const data = await req.json();
-    const con = await pool.connect();
+  const body = await req.json();
+  const { username, password } = body;
 
-    if (!con) return;
+  const { data } = await supabase
+    .from("users")
+    .select("*")
+    .eq("username", username)
+    .eq("password", password);
 
-    const searchAccount = await con.query(
-      `select * from users where username = $1 and password = $2`,
-      [data?.username, data?.password]
+    const tokenValue = jwt.sign({
+      id: data[0].id,
+      username: data[0].username,
+      password: data[0].password,
+    }, JWT_SECRET, {expiresIn: "1h"})
+
+    const token = await cookies().set("token", tokenValue, {
+         maxAge: 60 * 60, 
+         httpOnly: true
+    })
+
+  if (data) {
+    return new Response(
+      JSON.stringify({ message: "Akun ditemukan, berhasil login", token: token }),
+      {
+        status: 202,
+        headers: { "Content-Type": "application/json" },
+      }
     );
-
-    if (searchAccount.rows.length == 0) {
-      throw new Error("Akun tidak ditemukan");
-    }
-
-    const jwtSecret = process.env.JWT_SECRET;
-    const user = {
-      id: searchAccount.rows[0].id,
-      username: searchAccount.rows[0].username,
-    };
-    const token = jwt.sign(user, jwtSecret, {
-      expiresIn: "1h",
-    });
-
-    cookies().set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      maxAge: 3600000,
-    });
-
-    con.release();
-
-    return new Response(JSON.stringify({ message: "Berhasil login" }), {
-      status: 202,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ message: error }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  } finally {
   }
 }
