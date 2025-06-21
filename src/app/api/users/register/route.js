@@ -1,27 +1,38 @@
-import { pool } from "../../../../libs/postgreSql";
+import { supabase } from "../../../../configs/supabase";
+import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
 export async function POST(req) {
+  const body = await req.json();
+  const { username, password } = body;
+
   try {
-    const data = await req.json();
-    const con = await pool.connect();
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (!con) return;
+    const { data, error } = await supabase
+      .from("users")
+      .insert([{ username: username, password: hashedPassword }]);
 
-    con.query(`Insert into users (username, password) values($1, $2)`, [
-      data.username,
-      data.password
-    ]);
-    con.release();
-    console.log("berhasil!")
-
-    return new Response(JSON.stringify({ message: "Data berhasil disimpan" }), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    if (error) {
+      return NextResponse.json(
+        {
+          message: "Register failed, something wrong!",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+    return NextResponse.json(
+      {
+        message: "Register successed, account has been save!",
+        data: data,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.log("Request error: ", error);
-  } finally {
+    return NextResponse.json({
+      message: "Register failed, something wrong!",
+      error: error.message,
+    });
   }
 }
-
-

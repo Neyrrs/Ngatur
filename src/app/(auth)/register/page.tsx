@@ -1,31 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
 import axios from "axios";
 import { Lock, Package, User } from "lucide-react";
 import { PrimaryButton } from "@/components/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import DynamicIconInput from "@/components/fragments/inputs/DynamicIconInput";
+import { successSwal, errorSwal } from "@/utils/sweetAlert";
+
+interface registerData {
+  username: string;
+  password: string;
+}
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
   const navigate = useRouter();
+  const { register, handleSubmit } = useForm<registerData>();
 
-  const hanldeSubmit = async (event) => {
-    event.preventDefault();
-
+  const onSubmit = async (data: registerData) => {
     try {
-      const response = await axios.post("/api/user/register", {
-        username: username,
-        password: password,
+      const response = await axios.post("api/users/register", {
+        username: data.username,
+        password: data.password,
       });
 
-      if (response.status === 201) navigate.replace("/login");
+      if (response.status === 201) {
+        await successSwal("Register success!", "Redirecting to Login...");
+        navigate.replace("/login");
+      }
     } catch (error) {
-      console.error("Gagal Register:", error.response?.data || error.message);
+      console.log("Error", error);
+      errorSwal("Register Failed", error);
     }
   };
 
@@ -37,7 +43,7 @@ const Register = () => {
         <p className="mb-3 text-xs">Sign up to your account</p>
 
         <form
-          onSubmit={hanldeSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col w-full h-full gap-2"
         >
           <label htmlFor="username">
@@ -46,8 +52,11 @@ const Register = () => {
               icon={
                 <User width={30} height={30} className="px-1" color="#A62C2C" />
               }
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Nama Lengkap"
+              {...register("username", {
+                required: "Username must be at least 6 characters",
+                minLength: 6,
+              })}
+              placeholder="Username"
               type="text"
             />
           </label>
@@ -57,17 +66,15 @@ const Register = () => {
               icon={
                 <Lock width={30} height={30} className="px-1" color="#A62C2C" />
               }
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", {
+                required: "Password must be at least 6 characters",
+                minLength: 6,
+              })}
               placeholder="Password"
               type="password"
             />
           </label>
-          <PrimaryButton
-            width="px-2"
-            height="py-1"
-            text="Register"
-            onClick={hanldeSubmit}
-          />
+          <PrimaryButton width="px-2" height="py-1" text="Register" />
           <p className="text-xs text-center">
             Already have an account?{" "}
             <Link href={"/login"} className="underline text-[#A62C2C]">

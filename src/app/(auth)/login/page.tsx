@@ -1,31 +1,34 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Lock, Package, User } from "lucide-react";
 import { PrimaryButton } from "@/components/ui";
 import Link from "next/link";
 import DynamicIconInput from "@/components/fragments/inputs/DynamicIconInput";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
+
+interface loginData {
+  username: string;
+  password: string;
+}
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit } = useForm<loginData>();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const onSubmit = async (data: loginData) => {
     try {
       const response = await axios.post("/api/users/login", {
-        username: username,
-        password: password,
+        username: data.username,
+        password: data.password,
       });
 
-      if (response.status === 202) {
+      if (response.status === 200) {
         Swal.fire({
           icon: "success",
           title: "Login Success",
-          text: `Welcome ${username}`,
+          text: `Welcome ${data.username}`,
         }).then(() => {
           window.location.href = "/";
         });
@@ -54,7 +57,7 @@ const Login = () => {
 
         <form
           className="flex flex-col w-full h-full gap-2"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <label htmlFor="username">
             Username
@@ -62,8 +65,10 @@ const Login = () => {
               icon={
                 <User width={30} height={30} className="px-1" color="#A62C2C" />
               }
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
+              {...register("username", {
+                required: "Username must be at least 6 characters",
+                minLength: 6,
+              })}
               placeholder="Username"
               type="text"
             />
@@ -74,9 +79,11 @@ const Login = () => {
               icon={
                 <Lock width={30} height={30} className="px-1" color="#A62C2C" />
               }
-              onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              value={password}
+              {...register("password", {
+                required: "Username must be at least 6 characters",
+                minLength: 6,
+              })}
               type="password"
             />
           </label>
@@ -84,7 +91,6 @@ const Login = () => {
             width="px-2"
             height="py-1"
             text="Login"
-            onClick={handleSubmit}
           />
           <p className="text-xs text-center">
             Don`t have an account?{" "}

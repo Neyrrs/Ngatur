@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const response = NextResponse.json({ message: "Logout berhasil"}, {status: 200});
 
-  cookies().set("token", "", {
+  await cookies().set("token", "", {
     httpOnly: true,
     expires: new Date(0),
     path: "/",

@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { readCookieToken } from "../../../utils/readToken";
 import jwt from "jsonwebtoken";
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-
+  const token = await readCookieToken();
   const secret = process.env.JWT_SECRET;
 
   if (!token || !secret) {
@@ -17,10 +15,12 @@ export async function GET() {
 
     return NextResponse.json({
       message: "User verified",
-      user: decoded, 
+      user: decoded,
     });
-
   } catch (err) {
-    return NextResponse.json({ message: "Invalid or expired token" }, { status: 401 });
+    return NextResponse.json(
+      { message: `Invalid or expired token. Error: ${err}` },
+      { status: 401 }
+    );
   }
 }

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export function verifyToken(token?: string) {
+export function verifyToken(token) {
   const secret = process.env.JWT_SECRET;
   if (!secret || !token) return { valid: false, decoded: null };
 
@@ -8,6 +8,6 @@ export function verifyToken(token?: string) {
     const decoded = jwt.verify(token, secret);
     return { valid: true, decoded };
   } catch (err) {
-    return { valid: false, decoded: null };
+    return { valid: false, decoded: null, error: err };
   }
 }

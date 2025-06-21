@@ -1,17 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { LogOutIcon, Package } from "lucide-react";
 import Link from "next/link";
 import useUsers from "@/hooks/useUsers";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import ProfilePicture from "@/components/ui/icons/ProfilePicture";
+
 
 const NavigationBar = () => {
-  const { user, loading } = useUsers();
   const navigate = useRouter();
-
+  const { user, loading } = useUsers();
+  
   if (loading) return <div>Loading</div>;
 
   const hanldeLogout = async () => {
@@ -42,9 +44,9 @@ const NavigationBar = () => {
           <p className="text-2xl font-medium">Ngatur</p>
         </Link>
         <div className="flex gap-5 items-center">
-          <Link href={"/profile"} className="flex gap-5 items-center">
+          <Link href={"/profile"} className="flex gap-5 items-center h-full">
             <p className="text-lg font-medium">{user?.username} </p>
-            <div className="h-8 w-8 bg-white rounded-full"></div>
+            <ProfilePicture />
           </Link>
           <LogOutIcon className="cursor-pointer" onClick={hanldeLogout} />
         </div>
