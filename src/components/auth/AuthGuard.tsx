@@ -20,7 +20,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
         if (res.status !== 200) {
           router.replace("/login");
         }
-      } catch (err) {
+      } catch {
         router.replace("/login");
       } finally {
         setChecking(false);

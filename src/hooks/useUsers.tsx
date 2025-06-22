@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 interface userData{
+  id: number,
   username: string,
   profile: string
 }
