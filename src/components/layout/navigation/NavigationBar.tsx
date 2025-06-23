@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LogOutIcon, User, Package } from "lucide-react";
+import { LogOutIcon, Package } from "lucide-react";
 import Link from "next/link";
 import useUsers from "@/hooks/useUsers";
 import axios from "axios";
@@ -24,7 +24,7 @@ const NavigationBar = () => {
 
   if (loading) return <div>Loading</div>;
 
-  const hanldeLogout = async () => {
+  const handleLogout = async () => {
     Swal.fire({
       icon: "question",
       title: "You sure want to logout?",
@@ -46,7 +46,7 @@ const NavigationBar = () => {
   };
   return (
     <div className="fixed top-0 w-screen">
-      <div className="flex bg-[#222831] text-white w-full h-15 items-center px-15 justify-between">
+      <div className="flex bg-[#222831]/95 backdrop:blur-2xl z-50 text-white w-full h-15 items-center px-15 justify-between">
         <Link href={"/"} className="flex gap-2 items-center">
           <Package width={30} height={30} color="#471396" />
           <p className="text-2xl font-medium">Ngatur</p>
@@ -61,8 +61,8 @@ const NavigationBar = () => {
               className="w-fit px-3 cursor-pointer"
             >
               <DropdownMenuLabel className="flex justify-between w-35 items-center">
-                  <ProfilePicture />
-                  <p className="text-sm">{user?.username}</p>
+                <ProfilePicture />
+                <p className="text-sm">{user?.username}</p>
               </DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
@@ -72,13 +72,12 @@ const NavigationBar = () => {
                     className="flex gap-5 items-center h-full justify-between w-full"
                   >
                     <p className="text-base font-normal">Profile</p>
-                    <User onClick={hanldeLogout} />
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                   <div className="flex justify-between items-center w-full">
                     <p className="">Logout</p>
-                    <LogOutIcon onClick={hanldeLogout} />
+                    <LogOutIcon />
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -91,3 +90,4 @@ const NavigationBar = () => {
 };
 
 export default NavigationBar;
+

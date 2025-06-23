@@ -38,7 +38,7 @@ const Register = () => {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#222831] flex items-center justify-center">
+    <div className="h-screen w-screen bg-[#EFEFEF] flex items-center justify-center">
       <div className="bg-white w-fit h-90 justify-center shadow-xl flex flex-row-reverse rounded-lg gap-y-1">
         <div className="flex w-90 h-full flex-col justify-center px-10 gap-5 py-10">
           <h1 className="text-3xl font-medium">Register</h1>

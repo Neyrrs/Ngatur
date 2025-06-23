@@ -49,7 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#222831] flex items-center justify-center">
+    <div className="h-screen w-screen bg-[#EFEFEF] flex items-center justify-center">
       <div className="bg-white w-fit h-90 justify-center shadow-xl flex rounded-lg gap-y-1">
         <div className="flex w-90 h-full flex-col justify-center px-10 gap-5 py-10">
           <h1 className="text-3xl font-medium">Login</h1>
@@ -58,18 +58,19 @@ const Login = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <Label htmlFor="username">Username</Label>
-            <Input {...register("username")} id="username" required />
+            <Input {...register("username")} id="username" placeholder="John Doe" required />
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"
               id="password"
               {...register("password")}
+              placeholder="******"
               required
             />
             <Button variant={"default"}> Login</Button>
             <p className="text-xs text-center">
               Don`t have an account?{" "}
-              <Link href={"/register"} className="underline text-[#471396]">
+              <Link href={"/register"} className="underline text-primary">
                 Sign up
               </Link>
             </p>

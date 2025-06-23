@@ -110,7 +110,7 @@ const Profile = () => {
       <div className="h-screen w-screen bg-[#EFEFEF] flex items-center justify-center">
         <div className="bg-white w-fit h-95 shadow-xl/30 flex flex-row rounded-xl">
           <form
-            className="h-full gap-3 w-fit flex-col bg-primary rounded-l-md flex items-center justify-center px-10 py-10 border-r-2 border-[#222831]"
+            className="h-full gap-3 w-fit flex-col bg-white rounded-l-md flex items-center justify-center px-10 py-10 border-r-2 border-[#222831]"
             onSubmit={handleSubmitPhoto(submitProfilePicture)}
             encType="multipart/form-data"
           >
@@ -129,16 +129,16 @@ const Profile = () => {
                 </div>
               )}
             </div>
-            <h1 className="text-xl font-semibold text-white">
+            <h1 className="text-xl font-semibold text-black">
               {user?.username}
             </h1>
             <Input
               type="file"
               {...registerPhoto("file")}
               placeholder="Choose file"
-              className="text-white border-secondary"
+              className="border-primary"
             />
-            <Button variant={"secondary"}> Submit</Button>
+            <Button > Submit</Button>
           </form>
 
           <div className="flex flex-col gap-y-1 w-full h-full rounded-r-md px-10 py-10">
