@@ -17,12 +17,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Loader from "@/components/fragments/loaders/Loader";
+import ThemeButton from "@/components/ui/buttons/ThemeButton";
 
 const NavigationBar = () => {
   const navigate = useRouter();
   const { user, loading } = useUsers();
 
-  if (loading) return <div>Loading</div>;
+  if (loading) return <Loader />;
 
   const handleLogout = async () => {
     Swal.fire({
@@ -83,6 +85,7 @@ const NavigationBar = () => {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
+          <ThemeButton />
         </div>
       </div>
     </div>
@@ -90,4 +93,3 @@ const NavigationBar = () => {
 };
 
 export default NavigationBar;
-

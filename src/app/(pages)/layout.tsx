@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "@/app/globals.css";
 import NavigationBar from "@/components/layout/navigation/NavigationBar";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -20,12 +21,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${plusJakartaSans.variable} ${plusJakartaSans.variable} antialiased`}
-      >
-        <NavigationBar />
-        {children}
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={plusJakartaSans.variable}
+    >
+      <body className="antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <NavigationBar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

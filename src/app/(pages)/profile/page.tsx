@@ -107,14 +107,14 @@ const Profile = () => {
 
   return (
     <AuthGuard>
-      <div className="h-screen w-screen bg-[#EFEFEF] flex items-center justify-center">
-        <div className="bg-white w-fit h-95 shadow-xl/30 flex flex-row rounded-xl">
+      <div className="h-screen w-screen bg-background flex items-center justify-center">
+        <div className="bg-secondary w-fit h-95 shadow-xl/30 flex flex-row rounded-xl">
           <form
-            className="h-full gap-3 w-fit flex-col bg-white rounded-l-md flex items-center justify-center px-10 py-10 border-r-2 border-[#222831]"
+            className="h-full gap-3 w-fit flex-col bg-primary rounded-l-md flex items-center justify-center px-10 py-10 border-r-2 border-[#222831]"
             onSubmit={handleSubmitPhoto(submitProfilePicture)}
             encType="multipart/form-data"
           >
-            <div className="w-40 h-40 rounded-full border-[#222831] border-2 overflow-hidden">
+            <div className="w-40 h-40 rounded-full border-secondary border-2 overflow-hidden">
               {previewImage ? (
                 <Image
                   src={previewImage}
@@ -124,21 +124,21 @@ const Profile = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-sm text-gray-400">
+                <div className="w-full h-full flex items-center justify-center text-sm text-background">
                   No Image
                 </div>
               )}
             </div>
-            <h1 className="text-xl font-semibold text-black">
+            <h1 className="text-xl font-semibold text-background">
               {user?.username}
             </h1>
             <Input
               type="file"
               {...registerPhoto("file")}
               placeholder="Choose file"
-              className="border-primary"
+              className="border-background text-background"
             />
-            <Button > Submit</Button>
+            <Button variant={"secondary"}> Submit</Button>
           </form>
 
           <div className="flex flex-col gap-y-1 w-full h-full rounded-r-md px-10 py-10">
@@ -148,10 +148,9 @@ const Profile = () => {
               onSubmit={handleSubmitAccount(submitProfile)}
               autoComplete="off"
             >
-              <label>
-                User ID
-                <Input value={user?.id} readOnly />
-              </label>
+              <Label htmlFor="id">ID</Label>
+              User ID
+              <Input value={user?.id} readOnly />
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
@@ -165,7 +164,6 @@ const Profile = () => {
                 placeholder="******"
                 type="password"
               />
-
               <Button>Update</Button>
             </form>
           </div>

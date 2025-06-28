@@ -1,7 +1,6 @@
 import React from "react";
 import InfoButton from "@/components/ui/buttons/InfoButton";
 import { Button } from "@/components/ui/button";
-import * as motion from "motion/react-client";
 
 const MainCard = ({
   title = "Money Tracker",
@@ -10,10 +9,8 @@ const MainCard = ({
   icon = <></>,
 }) => {
   return (
-    <motion.div
-      whileHover={{ scale: 1.1, rotateZ: 1 }}
-      whileTap={{ scale: 0.9 }}
-      className="bg-[#222831] text-white rounded-lg flex gap-2 w-fit h-fit py-5 px-4 border-2 border-[#1A1A19]"
+    <div
+      className="bg-[#222831] text-white rounded-lg flex gap-2 w-fit h-fit py-5 px-4 border-2 border-secondary"
     >
       <div className="px-2">{icon && icon}</div>
       <div className="flex flex-col gap-3">
@@ -24,7 +21,7 @@ const MainCard = ({
           <InfoButton />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

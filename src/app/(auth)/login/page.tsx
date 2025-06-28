@@ -49,8 +49,8 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#EFEFEF] flex items-center justify-center">
-      <div className="bg-white w-fit h-90 justify-center shadow-xl flex rounded-lg gap-y-1">
+    <div className="h-screen w-screen bg-background flex items-center justify-center">
+      <div className="bg-secondary w-fit h-90 justify-center shadow-xl flex rounded-lg gap-y-1">
         <div className="flex w-90 h-full flex-col justify-center px-10 gap-5 py-10">
           <h1 className="text-3xl font-medium">Login</h1>
           <form
