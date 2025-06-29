@@ -23,15 +23,17 @@ const HeroSection = () => {
       <div className="col-start-3 col-end-5 row-start-1 row-end-2 text-foreground flex flex-col items-start justify-center p-5 gap-10">
         <h1 className="text-5xl font-bold">Still curious? </h1>
         <p className=" text-xl text-justify">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ad
-          ratione eum distinctio deserunt, delectus et. Provident delectus, sint
-          fuga laudantium itaque non accusamus quisquam minima quos dolorem,
-          aspernatur ducimus!
+          This website is created using <code> Next.js </code>, giving it a fast
+          and smooth user experience. For the design,<code> Tailwind CSS </code>
+          brings flexibility and consistency to the layout and styles. All data
+          is handled using <code> Supabase</code>, which works seamlessly with
+          <code> PostgreSQL </code> as the main database. To complete the look
+          and feel, <code> shadcn/ui </code> provides a set of elegant,
+          customizable components that make the interface clean, modern, and
+          easy to navigate.
         </p>
       </div>
-      <div className="col-start-1 col-end-5 row-start-2 row-end-3 bg-foreground/50 h-50 rounded-md ">
-        
-      </div>
+      <div className="col-start-1 col-end-5 row-start-2 row-end-3 bg-foreground/50 h-30 rounded-md "></div>
     </div>
   );
 };

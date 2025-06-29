@@ -99,7 +99,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center">
+      <div className="h-screen w-screen flex items-center justify-center bg-background text-foreground">
         <p>Loading...</p>
       </div>
     );
@@ -107,14 +107,14 @@ const Profile = () => {
 
   return (
     <AuthGuard>
-      <div className="h-screen w-screen bg-background flex items-center justify-center">
-        <div className="bg-secondary w-fit h-95 shadow-xl/30 flex flex-row rounded-xl">
+      <div className="h-screen w-screen bg-background text-foreground flex items-center justify-center">
+        <div className="bg-secondary text-foreground w-fit h-95 shadow-xl/30 flex flex-row rounded-xl border border-border">
           <form
-            className="h-full gap-3 w-fit flex-col bg-primary rounded-l-md flex items-center justify-center px-10 py-10 border-r-2 border-[#222831]"
+            className="h-full gap-3 w-fit flex-col bg-primary text-primary-foreground rounded-l-md flex items-center justify-center px-10 py-10 border-r border-border"
             onSubmit={handleSubmitPhoto(submitProfilePicture)}
             encType="multipart/form-data"
           >
-            <div className="w-40 h-40 rounded-full border-secondary border-2 overflow-hidden">
+            <div className="w-40 h-40 rounded-full border border-secondary overflow-hidden">
               {previewImage ? (
                 <Image
                   src={previewImage}
@@ -124,39 +124,38 @@ const Profile = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-sm text-background">
+                <div className="w-full h-full flex items-center justify-center text-sm text-primary-foreground">
                   No Image
                 </div>
               )}
             </div>
-            <h1 className="text-xl font-semibold text-background">
-              {user?.username}
-            </h1>
+            <h1 className="text-xl font-semibold">{user?.username}</h1>
             <Input
               type="file"
               {...registerPhoto("file")}
               placeholder="Choose file"
-              className="border-background text-background"
+              className="text-primary-foreground border-border file:text-foreground"
             />
-            <Button variant={"secondary"}> Submit</Button>
+            <Button variant={"secondary"}>Submit</Button>
           </form>
 
-          <div className="flex flex-col gap-y-1 w-full h-full rounded-r-md px-10 py-10">
+          <div className="flex flex-col gap-y-2 w-full h-full rounded-r-md px-10 py-10 bg-background text-foreground">
             <h2 className="text-xl font-semibold mb-2">Your ID Card</h2>
             <form
-              className="flex flex-col gap-y-2 "
+              className="flex flex-col gap-y-2"
               onSubmit={handleSubmitAccount(submitProfile)}
               autoComplete="off"
             >
               <Label htmlFor="id">ID</Label>
-              User ID
-              <Input value={user?.id} readOnly />
+              <Input value={user?.id} readOnly className="text-foreground" />
+
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
                 {...registerAccount("username")}
-                type="username"
+                type="text"
               />
+
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -164,7 +163,8 @@ const Profile = () => {
                 placeholder="******"
                 type="password"
               />
-              <Button>Update</Button>
+
+              <Button variant={"default"}>Update</Button>
             </form>
           </div>
         </div>

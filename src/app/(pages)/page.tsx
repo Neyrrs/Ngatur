@@ -9,6 +9,8 @@ import AuthGuard from "@/components/auth/AuthGuard";
 import Loader from "@/components/fragments/loaders/Loader";
 import HeroSection from "@/components/layout/hero/HeroSection";
 import About from "@/components/layout/hero/About";
+import GetInTouch from "@/components/layout/hero/GetInTouch";
+import Footer from "@/components/layout/hero/Footer";
 
 export default function Home() {
   const { user, loading } = useUsers();
@@ -81,6 +83,11 @@ export default function Home() {
           <div className="w-full">
             <About />
             <HeroSection />
+          </div>
+          <div className="w-full justify-center bg-[#222831] pt-15 pb-5 px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
+            <Footer />
+            <GetInTouch />
+            <p className="text-sm text-white font-thin">© 2025 Ngatur - Neyrrs</p>
           </div>
         </div>
       </AuthGuard>
