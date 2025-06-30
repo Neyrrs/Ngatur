@@ -47,12 +47,17 @@ const NavigationBar = () => {
     });
   };
   return (
-    <div className="fixed top-0 w-screen">
+    <div className="fixed top-0 w-screen z-20">
       <div className="flex bg-[#222831]/95 backdrop:blur-2xl z-50 text-white w-full h-15 items-center px-15 justify-between">
         <Link href={"/"} className="flex gap-2 items-center">
           <Package width={30} height={30} color="#471396" />
           <p className="text-2xl font-medium">Ngatur</p>
         </Link>
+        <div className="w-fit h-full flex justify-center items-center gap-5">
+          <Link href={"/moneyTrack"}>Money Tracker</Link>
+          <Link href={"/taskTrack"}>Task Tracker</Link>
+          <Link href={"/eventTrack"}>Event Tracker</Link>
+        </div>
         <div className="flex gap-5 items-center">
           <DropdownMenu>
             <DropdownMenuTrigger className="outline-none cursor-pointer">

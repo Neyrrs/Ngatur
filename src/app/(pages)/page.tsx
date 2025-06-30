@@ -11,6 +11,7 @@ import HeroSection from "@/components/layout/hero/HeroSection";
 import About from "@/components/layout/hero/About";
 import GetInTouch from "@/components/layout/hero/GetInTouch";
 import Footer from "@/components/layout/hero/Footer";
+import Link from "next/link";
 
 export default function Home() {
   const { user, loading } = useUsers();
@@ -21,18 +22,21 @@ export default function Home() {
       title: "Money Tracker",
       button: "Go to Your Own Bank",
       description: "Place where you can manage your money",
+      link: "/moneyTrack",
     },
     {
       icon: <TabletSmartphone width={30} height={30} color="white" />,
       title: "Task Tracker",
       button: "See Your Homework",
       description: "Place where you can manage your task",
+      link: "/taskTrack",
     },
     {
       icon: <Calendar1 width={30} height={30} color="white" />,
       title: "Event Tracker",
       button: "See Your Schedule",
       description: "Place where you can manage your date",
+      link: "/eventTrack",
     },
   ];
 
@@ -70,13 +74,14 @@ export default function Home() {
           <div className="py-5 px-15 flex gap-5 h-full w-full">
             <div className="w-full h-fit flex flex-wrap gap-5 justify-between gap-y-10">
               {cardData.map((item) => (
-                <MainCard
-                  button={item.button}
-                  description={item.description}
-                  icon={item.icon}
-                  title={item.title}
-                  key={item.title}
-                />
+                <Link key={item.title} href={item.link}>
+                  <MainCard
+                    button={item.button}
+                    description={item.description}
+                    icon={item.icon}
+                    title={item.title}
+                  />
+                </Link>
               ))}
             </div>
           </div>
@@ -87,7 +92,9 @@ export default function Home() {
           <div className="w-full justify-center bg-[#222831] pt-15 pb-5 px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
             <Footer />
             <GetInTouch />
-            <p className="text-sm text-white font-thin">© 2025 Ngatur - Neyrrs</p>
+            <p className="text-sm text-white font-thin">
+              © 2025 Ngatur - Neyrrs
+            </p>
           </div>
         </div>
       </AuthGuard>

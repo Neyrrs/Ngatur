@@ -11,6 +11,7 @@ const Footer = () => {
     { name: "Task Tracker", href: "/task-tracker" },
     { name: "Events Tracker", href: "/events-tracker" },
   ];
+  
   return (
     <div className="w-full h-full col-start-1 flex flex-col gap-5">
       <Link href={"/"} className="flex gap-2 items-center w-fit">

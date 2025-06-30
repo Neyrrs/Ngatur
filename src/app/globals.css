@@ -55,7 +55,7 @@
   --popover-foreground: #1e1b2e;
   --primary: #471396;
   --primary-foreground: #f5f2ff;
-  --secondary: #ece9f5;
+  --secondary: #9f9ea3;
   --secondary-foreground: #1e1b2e;
   --muted: #ede9fe;
   --muted-foreground: #6b4caf;
@@ -79,6 +79,7 @@
   --sidebar-border: #dcd6f3;
   --sidebar-ring: #a48ede;
 }
+
 .dark {
   --background: #0a0e20;
   --foreground: #f9f5ff;
