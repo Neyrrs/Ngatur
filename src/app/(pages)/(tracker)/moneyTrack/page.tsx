@@ -26,7 +26,7 @@ const page = () => {
           <SecondaryCard />
         </div>
         <div className="rounded-md border-3 border-primary flex flex-col gap-5 p-2">
-          <h1 className="text-2xl font-semibold">Your Monthly money recap</h1>
+          <h1 className="text-2xl font-semibold text-foreground">Your Monthly money recap</h1>
           <Table>
             <TableHeader>
               <TableRow>
