@@ -4,14 +4,14 @@ import jwt from "jsonwebtoken";
 
 export async function GET() {
   const token = await readCookieToken();
-  const secret = process.env.JWT_SECRET;
+  const JWT_SECRET = process.env.JWT_SECRET;
 
-  if (!token || !secret) {
+  if (!token || !JWT_SECRET) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const decoded = jwt.verify(token, secret);
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     return NextResponse.json({
       message: "User verified",

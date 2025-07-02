@@ -33,7 +33,7 @@ export async function POST(req) {
         profile: data.profile,
       },
       JWT_SECRET,
-      { expiresIn: "2h" }
+      { expiresIn: "1d" }
     );
 
     cookies().set("token", tokenValue, {
