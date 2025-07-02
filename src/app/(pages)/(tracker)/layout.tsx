@@ -13,17 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <div className="h-fit w-fit mt-15">{children}</div>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
+      <div className="h-screen w-screen pt-15">{children}</div>
+    </ThemeProvider>
   );
 }
