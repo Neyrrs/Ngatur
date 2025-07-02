@@ -17,6 +17,7 @@ interface loginData {
 }
 
 const Login = () => {
+
   const { register, handleSubmit } = useForm<loginData>();
 
   const onSubmit = async (data: loginData) => {
@@ -58,7 +59,12 @@ const Login = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <Label htmlFor="username">Username</Label>
-            <Input {...register("username")} id="username" placeholder="John Doe" required />
+            <Input
+              {...register("username")}
+              id="username"
+              placeholder="John Doe"
+              required
+            />
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"

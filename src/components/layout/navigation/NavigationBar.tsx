@@ -24,7 +24,7 @@ const NavigationBar = () => {
   const navigate = useRouter();
   const { user, loading } = useUsers();
 
-  // if (loading) return <Loader />;
+  if (loading) return <Loader />;
 
   const handleLogout = async () => {
     Swal.fire({

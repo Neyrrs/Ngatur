@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/components/ui/theme-provider";
 import "../../globals.css";
 import type { Metadata } from "next";
 
@@ -12,14 +11,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem={false}
-      disableTransitionOnChange
-    >
-      <div className="h-screen w-screen pt-15">{children}</div>
-    </ThemeProvider>
-  );
+  return <div className="h-screen w-screen pt-15">{children}</div>;
 }
