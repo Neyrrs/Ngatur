@@ -52,7 +52,9 @@ export const GET = async () => {
   //   const body = await req.json();
   //   const { year, month } = body();
 
-  const token = await readCookieToken();
+  //   const token = await readCookieToken();
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJFendhbklibnUiLCJwcm9maWxlIjoiaHR0cHM6Ly9yZXMuY2xvdWRpbmFyeS5jb20vZGh2bm55MnYyL2ltYWdlL3VwbG9hZC92MTc1MDUwNDQ3MC9wcm9maWxlX3BpY3R1cmVzL2E1eHBkZmZjZWJ5cGhxa3B6aG15LmpwZyIsImlhdCI6MTc1MTQ2ODU0MiwiZXhwIjoxNzUxNTU0OTQyfQ.0qac_nNTO2T51ygFyhCpTIpiEYDQ2l6zz-Ll1M-1uok";
   const JWT_SECRET = process.env.JWT_SECRET;
 
   if (!token || !JWT_SECRET) {
@@ -63,7 +65,10 @@ export const GET = async () => {
 
   try {
     if (verify) {
-      const data = await supabase.from("money").select("*");
+      const { data } = await supabase
+        .from("money")
+        .select("*")
+        .eq("userId", verify?.id);
       // .gte("date", `2025-06-01`)
       // .lte("date", `2025-06-30`);
 

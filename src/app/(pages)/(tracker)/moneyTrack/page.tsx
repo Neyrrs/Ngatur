@@ -1,3 +1,5 @@
+"use client";
+
 import SecondaryCard from "@/components/layout/cards/SecondaryCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,9 +14,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { WalletIcon } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 
-const page = () => {
+const Page = () => {
+  useEffect(() => {
+    const fetching = async () => {
+      const result = await axios.get("/api/user/track/money");
+      console.log(result.data);
+    };
+    fetching();
+  }, []);
+
   return (
     <div className="flex h-full w-full pl-15 gap-5">
       <main className="w-2/3 bg-background flex flex-col gap-8 h-fit py-5">
@@ -81,4 +92,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
