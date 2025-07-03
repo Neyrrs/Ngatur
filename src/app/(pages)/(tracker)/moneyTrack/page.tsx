@@ -21,7 +21,7 @@ const Page = () => {
   useEffect(() => {
     const fetching = async () => {
       const result = await axios.get("/api/user/track/money");
-      console.log(result.data);
+      console.log(result.data.data);
     };
     fetching();
   }, []);
