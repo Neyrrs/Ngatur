@@ -45,7 +45,6 @@ const Page = () => {
             <CalendarCheck size={35} />
             Your Monthly Event Recaps
           </h1>
-          {/* <ComboboxField /> */}
           <Table className="max-h-50">
             <TableHeader>
               <TableRow>

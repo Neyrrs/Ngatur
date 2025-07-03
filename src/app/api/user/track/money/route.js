@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const POST = async (req) => {
   const body = await req.json();
-  const { amount, status, date } = body;
+  const { name, amount, status, date } = body;
 
   const token = await readCookieToken();
   const JWT_SECRET = process.env.JWT_SECRET;
@@ -20,6 +20,7 @@ export const POST = async (req) => {
     const { error } = await supabase.from("money").insert([
       {
         userId: verify?.id,
+        name: name,
         amount: amount,
         status: status,
         date: date,
@@ -48,8 +49,12 @@ export const POST = async (req) => {
   }
 };
 
-export const GET = async () => {
+export const GET = async (req) => {
+  const { searchParams } = new URL(req.url);
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
   const token = await readCookieToken();
+  const JWT_SECRET = process.env.JWT_SECRET;
 
   if (!token || !JWT_SECRET) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -62,9 +67,9 @@ export const GET = async () => {
       const { data } = await supabase
         .from("money")
         .select("*")
-        .eq("userId", verify?.id);
-      // .gte("date", `2025-06-01`)
-      // .lte("date", `2025-06-30`);
+        .eq("userId", verify?.id)
+        .gte("date", startDate)
+        .lte("date", endDate);
 
       return NextResponse.json(
         { data: data, message: "Insert success, recap inserted!" },

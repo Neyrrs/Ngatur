@@ -22,7 +22,7 @@ import {
 
 type Option = {
   label: string;
-  value: string;
+  value: string | number;
 };
 
 type ComboboxFieldProps = {
@@ -53,13 +53,13 @@ export function ComboboxField({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-fit justify-between"
         >
           {selectedLabel || placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-fit p-0">
         <Command>
           <CommandInput placeholder="Search..." />
           <CommandList>
@@ -68,9 +68,9 @@ export function ComboboxField({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue === value ? "" : currentValue);
+                  value={option.value.toString()}
+                  onSelect={() => {
+                    onChange(option.value); // <--- Ini yang kita ubah!
                     setOpen(false);
                   }}
                 >
