@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useGetUser } from "@/hooks/useUsers";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 import ProfilePicture from "@/components/ui/icons/ProfilePicture";
 import {
   DropdownMenu,
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Loader from "@/components/fragments/loaders/Loader";
 import ThemeButton from "@/components/ui/buttons/ThemeButton";
+import { confirmDialog } from "@/components/ui/alert";
 
 const NavigationBar = () => {
   const navigate = useRouter();
@@ -27,24 +27,20 @@ const NavigationBar = () => {
   if (loading) return <Loader />;
 
   const handleLogout = async () => {
-    Swal.fire({
-      icon: "question",
-      title: "You sure want to logout?",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await axios.get("api/user/logout");
-          if (res.status === 200) console.log("logout berhasil");
-          navigate.replace("/login");
-        } catch (error) {
-          console.error("Eror: ", error);
-        }
+    const result = await confirmDialog(
+      "Delete Item?",
+      "This action cannot be undone!"
+    );
+
+    if (result) {
+      try {
+        const res = await axios.get("api/user/logout");
+        if (res.status === 200) console.log("logout berhasil");
+        navigate.replace("/login");
+      } catch (error) {
+        console.error("Eror: ", error);
       }
-    });
+    }
   };
   return (
     <div className="fixed top-0 w-screen z-20">

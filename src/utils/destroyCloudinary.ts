@@ -1,6 +1,6 @@
 import { cloudinary } from "../configs/cloudinary";
 
-export async function deleteCloudinaryImageByUrl(url) {
+export async function deleteCloudinaryImageByUrl({ url = "" }) {
   try {
     const parts = url.split("/");
     const filename = parts[parts.length - 1];
@@ -8,6 +8,8 @@ export async function deleteCloudinaryImageByUrl(url) {
 
     await cloudinary.uploader.destroy(publicId);
   } catch (err) {
-    console.error("Error deleting image from Cloudinary:", err.message);
+    if (err instanceof Error) {
+      console.error("Error deleting image from Cloudinary:", err.message);
+    }
   }
 }

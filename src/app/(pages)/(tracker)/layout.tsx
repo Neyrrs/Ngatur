@@ -1,3 +1,4 @@
+import AuthGuard from "@/components/auth/AuthGuard";
 import "../../globals.css";
 import type { Metadata } from "next";
 
@@ -11,5 +12,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="h-screen w-screen pt-15">{children}</div>;
+  return (
+    <AuthGuard>
+      <div className="h-screen w-screen pt-15">{children}</div>;
+    </AuthGuard>
+  );
 }

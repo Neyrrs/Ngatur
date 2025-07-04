@@ -4,12 +4,13 @@ import React from "react";
 import axios from "axios";
 import Link from "next/link";
 import management from "@/assets/pictures/management2.jpg";
-import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
+import { successToast } from "@/utils/toast";
+import { useRouter } from "next/navigation";
 
 interface loginData {
   username: string;
@@ -17,8 +18,8 @@ interface loginData {
 }
 
 const Login = () => {
-
   const { register, handleSubmit } = useForm<loginData>();
+  const navigate = useRouter();
 
   const onSubmit = async (data: loginData) => {
     try {
@@ -28,24 +29,16 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Login Success",
-          text: `Welcome ${data.username}`,
-        }).then(() => {
-          window.location.href = "/";
-        });
+        successToast({ title: "Sign in success!" });
       }
 
       if (response.status === 500) {
-        throw new Error("Login Failed: Account not found");
+        throw new Error("Sign in Failed: Account not found");
       }
     } catch {
-      Swal.fire({
-        title: "Login Failed",
-        icon: "error",
-        text: "Incorrect username or password",
-      });
+      successToast({ title: "Sign in failed!" });
+    } finally {
+      navigate.replace("/");
     }
   };
 
@@ -69,8 +62,8 @@ const Login = () => {
             <Input
               type="password"
               id="password"
-              {...register("password")}
               placeholder="******"
+              {...register("password")}
               required
             />
             <Button variant={"default"}> Login</Button>

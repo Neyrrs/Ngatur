@@ -17,7 +17,7 @@ export const POST = async (req) => {
   const verify = jwt.verify(token, JWT_SECRET);
 
   try {
-    const { error } = await supabase.from("task").insert([
+    const { data, error } = await supabase.from("task").insert([
       {
         userId: verify?.id,
         name: name,
@@ -26,7 +26,7 @@ export const POST = async (req) => {
         date: date,
         description: description,
       },
-    ]);
+    ]).select().single();
 
     if (error) {
       return NextResponse.json(
@@ -39,7 +39,7 @@ export const POST = async (req) => {
     }
 
     return NextResponse.json(
-      { message: "Insert success, recap inserted!" },
+      { data: data, message: "Insert success, recap inserted!" },
       { status: 200 }
     );
   } catch (error) {

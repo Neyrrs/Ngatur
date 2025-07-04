@@ -24,8 +24,6 @@ export const GET = async () => {
     const firstDayMonth = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`;
     const firstDayYear = `${now.getFullYear()}-01-01`;
 
-    console.log(today, firstDayMonth, firstDayYear);
-
     if (verify) {
       const { data: daily } = await supabase
         .from("money")

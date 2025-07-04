@@ -30,6 +30,9 @@ import type { ITask, ITaskResponse } from "@/types/taskType";
 import { useGetTask, useTaskSummary } from "@/hooks/useTask";
 import { usePaginatedData } from "@/utils/paginatedData";
 import { getDefaultDateRange } from "@/utils/defaultRage";
+import { successToast } from "@/utils/toast";
+import DatePickerField from "@/components/ui/date-picker";
+import { confirmDialog } from "@/components/ui/alert";
 
 interface IFormDataAdd {
   name: string;
@@ -103,11 +106,11 @@ const Page = () => {
       },
     ],
     type: [
-      { label: "School", value: "school" },
-      { label: "Personal", value: "personal" },
-      { label: "Organization", value: "organization" },
-      { label: "Work", value: "work" },
-      { label: "Research", value: "research" },
+      { label: "School", value: "School" },
+      { label: "Personal", value: "Personal" },
+      { label: "Organization", value: "Organization" },
+      { label: "Work", value: "Work" },
+      { label: "Research", value: "Research" },
     ],
   };
 
@@ -150,27 +153,36 @@ const Page = () => {
     try {
       setLoading(true);
       const res = await axios.post("/api/user/track/task", data);
-      const newTask = res.data.data;
+      const newTask = res?.data?.data;
       setData((prev) => [...prev, newTask]);
-    } catch (err) {
-      console.error("Add task failed:", err);
+    } catch {
+      successToast({ title: "Task added" });
     } finally {
       await Promise.all([refetch(), refetchAllTask()]);
       resetAddForm();
       setLoading(false);
+      successToast({ title: "Task added" });
     }
   };
 
   const onDelete = async (id: number) => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/user/track/task/${id}`);
-      await getTaskData(dateRange.startDate, dateRange.endDate);
-    } catch (err) {
-      console.error("Delete task failed:", err);
-    } finally {
-      await Promise.all([refetch(), refetchAllTask()]);
-      setLoading(false);
+    const result = await confirmDialog(
+      "Delete Item?",
+      "This action cannot be undone!"
+    );
+
+    if (result) {
+      try {
+        setLoading(true);
+        await axios.delete(`/api/user/track/task/${id}`);
+        await getTaskData(dateRange.startDate, dateRange.endDate);
+      } catch {
+        successToast({ title: "Failed to delete, something is wrong" });
+      } finally {
+        successToast({ title: "Task deleted" });
+        await Promise.all([refetch(), refetchAllTask()]);
+        setLoading(false);
+      }
     }
   };
 
@@ -247,7 +259,7 @@ const Page = () => {
 
             <TableBody>
               {paginatedData.map((item, idx) => (
-                <TableRow key={item?.id}>
+                <TableRow key={item?.id ?? `row-${idx}`}>
                   <TableCell>
                     {(currentPage - 1) * itemPerPage + idx + 1}
                   </TableCell>
@@ -273,7 +285,9 @@ const Page = () => {
             <TableFooter>
               <TableRow>
                 <TableCell colSpan={6}>Total</TableCell>
-                <TableCell>{alltask?.length || 0}</TableCell>
+                <TableCell className="text-right">
+                  {alltask?.length || 0}
+                </TableCell>
               </TableRow>
             </TableFooter>
           </Table>
@@ -334,7 +348,11 @@ const Page = () => {
             name="status"
           />
           <Label>Date</Label>
-          <Input type="date" {...addData("date")} />
+          <DatePickerField
+            name="date"
+            control={controlAddData}
+            placeholder="Choose a date"
+          />
           <Label>Description</Label>
           <Textarea className="resize-none" {...addData("description")} />
           <Button disabled={loading}>

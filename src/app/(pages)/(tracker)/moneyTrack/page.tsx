@@ -30,6 +30,9 @@ import { useSummary, useGetMoney } from "@/hooks/useMoney";
 import { calculateBalance } from "@/utils/calculateBalance";
 import { getDefaultDateRange } from "@/utils/defaultRage";
 import { usePaginatedData } from "@/utils/paginatedData";
+import DatePickerField from "@/components/ui/date-picker";
+import { successToast } from "@/utils/toast";
+import { confirmDialog } from "@/components/ui/alert";
 
 interface ISearchType {
   month: number;
@@ -95,8 +98,8 @@ const Page = () => {
     ],
     year: [{ label: "2025", value: 2025 }],
     status: [
-      { label: "Expense", value: "expense" },
-      { label: "Income", value: "income" },
+      { label: "Expense", value: "Expense" },
+      { label: "Income", value: "Income" },
     ],
   };
 
@@ -161,9 +164,10 @@ const Page = () => {
       });
       const dataRes = res?.data?.data;
       setData((prev) => [...prev, dataRes]);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      successToast({ title: "Failed to submit, please fill out all fields" });
     } finally {
+      successToast({ title: "Money recap added" });
       resetData();
       await Promise.all([refetch(), refetchAmount()]);
       setLoading(false);
@@ -171,15 +175,23 @@ const Page = () => {
   };
 
   const onDelete = async (id: number) => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/user/track/money/${id}`);
-      await getMoneyData(dateRange.startDate, dateRange.endDate);
-    } catch (err) {
-      console.error("Fetch money failed:", err);
-    } finally {
-      await Promise.all([refetch(), refetchAmount()]);
-      setLoading(false);
+    const result = await confirmDialog(
+      "Delete Item?",
+      "This action cannot be undone!"
+    );
+
+    if (result) {
+      try {
+        setLoading(true);
+        await axios.delete(`/api/user/track/money/${id}`);
+        await getMoneyData(dateRange.startDate, dateRange.endDate);
+      } catch {
+        successToast({ title: "Failed to delete, something is wrong" });
+      } finally {
+        successToast({ title: "Money recap deleted" });
+        await Promise.all([refetch(), refetchAmount()]);
+        setLoading(false);
+      }
     }
   };
 
@@ -320,7 +332,11 @@ const Page = () => {
             name="status"
           />
           <Label>Date</Label>
-          <Input {...addData("date")} type="date" />
+          <DatePickerField
+            name="date"
+            control={addDataControl}
+            placeholder="Choose a date"
+          />
           <Label>Amount</Label>
           <Input {...addData("amount")} type="number" />
           <Button size={"sm"} disabled={loading}>

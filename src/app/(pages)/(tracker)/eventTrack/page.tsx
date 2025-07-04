@@ -29,6 +29,9 @@ import type { IEvent, IEventResponse } from "@/types/eventType";
 import { ComboboxField } from "@/components/ui/combo-box";
 import { getDefaultDateRange } from "@/utils/defaultRage";
 import { usePaginatedData } from "@/utils/paginatedData";
+import DatePickerField from "@/components/ui/date-picker";
+import { successToast } from "@/utils/toast";
+import { confirmDialog } from "@/components/ui/alert";
 
 interface IFormDataAdd {
   name: string;
@@ -87,8 +90,10 @@ const Page = () => {
       { label: "2025", value: 2025 },
     ],
     status: [
-      { label: "Expense", value: "expense" },
-      { label: "Income", value: "incomee" },
+      { label: "Family", value: "Family" },
+      { label: "Friend", value: "Friend" },
+      { label: "Organization", value: "Organization" },
+      { label: "Personal", value: "Personal" },
     ],
   };
 
@@ -113,11 +118,12 @@ const Page = () => {
     try {
       setLoading(true);
       const res = await axios.post("/api/user/track/event", data);
-      const dataRes = res.data.data;
+      const dataRes = res?.data?.data;
       setData((prev) => [...prev, dataRes]);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      successToast({ title: "Failed to submit, please fill out all fields" });
     } finally {
+      successToast({ title: "Event added" });
       await Promise.all([refetch(), refetchAllEvent()]);
       resetData();
       setLoading(false);
@@ -125,15 +131,23 @@ const Page = () => {
   };
 
   const onDelete = async (id: number) => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/user/track/event/${id}`);
-      await getEventData(dateRange.startDate, dateRange.endDate);
-    } catch (err) {
-      console.error("Delete event failed:", err);
-    } finally {
-      setLoading(true);
-      await Promise.all([refetch(), refetchAllEvent()]);
+    const result = await confirmDialog(
+      "Delete Item?",
+      "This action cannot be undone!"
+    );
+
+    if (result) {
+      try {
+        setLoading(true);
+        await axios.delete(`/api/user/track/event/${id}`);
+        await getEventData(dateRange.startDate, dateRange.endDate);
+      } catch {
+        successToast({ title: "Failed to delete, something is wrong" });
+      } finally {
+        successToast({ title: "Task deleted" });
+        setLoading(true);
+        await Promise.all([refetch(), refetchAllEvent()]);
+      }
     }
   };
 
@@ -325,13 +339,18 @@ const Page = () => {
           <ComboboxField
             options={comboBoxOption?.status}
             control={controlAddDate}
-            placeholder="status"
-            name="status"
+            placeholder="type"
+            name="type"
           />
           <Label>Location</Label>
           <Input {...addData("location")} />
           <Label>Date</Label>
-          <Input type="date" {...addData("date")} />
+          <DatePickerField
+            name="date"
+            control={controlAddDate}
+            label="Date of birth"
+            placeholder="Choose a date"
+          />
           <Button disabled={loading}>
             {!loading ? "Save" : <Loader2 className="animate-spin" />}
           </Button>

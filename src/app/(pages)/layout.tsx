@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "@/app/globals.css";
 import NavigationBar from "@/components/layout/navigation/NavigationBar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
           enableSystem={false}
         >
           <NavigationBar />
+          <Toaster />
           {children}
         </ThemeProvider>
       </body>

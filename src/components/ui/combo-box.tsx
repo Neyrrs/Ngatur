@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useController, Control } from "react-hook-form";
+import {
+  useController,
+  Control,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -25,19 +30,19 @@ type Option = {
   value: string | number;
 };
 
-type ComboboxFieldProps = {
-  name: string;
-  control: Control<any>;
+type ComboboxFieldProps<T extends FieldValues> = {
+  name: Path<T>;
+  control: Control<T>;
   options: Option[];
   placeholder?: string;
 };
 
-export function ComboboxField({
+export function ComboboxField<T extends FieldValues>({
   name,
   control,
   options,
   placeholder = "Select option...",
-}: ComboboxFieldProps) {
+}: ComboboxFieldProps<T>) {
   const [open, setOpen] = useState(false);
 
   const {
@@ -53,24 +58,24 @@ export function ComboboxField({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-min-120 justify-between"
+          className="w-[200px] justify-between"
         >
           {selectedLabel || placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-fit p-0">
+      <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search..." required/>
+          <CommandInput placeholder="Search..." />
           <CommandList>
             <CommandEmpty>No option found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
-                  key={option.value}
+                  key={option.value.toString()}
                   value={option.value.toString()}
                   onSelect={() => {
-                    onChange(option.value); // <--- Ini yang kita ubah!
+                    onChange(option.value);
                     setOpen(false);
                   }}
                 >

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useGetUser } from "@/hooks/useUsers";
 import AuthGuard from "@/components/auth/AuthGuard";
-import { successSwal, confirmSwal } from "@/utils/sweetAlert";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Image from "next/image";
@@ -11,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { IUpdateProfile, IUpdateProfilePicture } from "@/types/userType";
+import { confirmDialog } from "@/components/ui/alert";
+import { successToast } from "@/utils/toast";
 
 const Profile = () => {
   const { user, loading, refetch } = useGetUser();
@@ -52,17 +53,21 @@ const Profile = () => {
 
   const submitProfile = async (data: IUpdateProfile) => {
     try {
-      const confirm = await confirmSwal("Update your profile?");
-      if (!confirm) return;
+      const result = await confirmDialog(
+        "Delete Item?",
+        "This action cannot be undone!"
+      );
 
-      const response = await axios.put("/api/user/updateProfile", {
-        username: data.username,
-        password: data.password,
-      });
+      if (result) {
+        const response = await axios.put("/api/user/updateProfile", {
+          username: data.username,
+          password: data.password,
+        });
 
-      if (response.status === 200) await successSwal();
-    } catch (error) {
-      console.error(error);
+        if (response.status === 200) successToast({ title: "Profile updated" });
+      }
+    } catch {
+      successToast({ title: "Fail to updated" });
     } finally {
       refetch();
     }
@@ -87,10 +92,10 @@ const Profile = () => {
       );
 
       if (response.status === 200) {
-        await successSwal("Success", "Photo updated");
+        successToast({ title: "Profile updated" });
       }
-    } catch (err) {
-      console.error("Upload failed:", err);
+    } catch {
+      successToast({ title: "Failed to updated" });
     } finally {
       refetch();
     }
