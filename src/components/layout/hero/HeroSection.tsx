@@ -1,21 +1,13 @@
 import Image from "next/image";
 import React from "react";
-import management from "@/assets/pictures/management.jpg";
-import task from "@/assets/pictures/task.jpg";
+import management from "@/assets/pictures/heroSection.jpg";
 
 const HeroSection = () => {
   return (
-    <div className="grid grid-cols-4 grid-rows-2 gap-5 px-15">
-      <div className="col-start-1 col-end-2 row-start-1 row-end-2">
+    <div className="grid grid-cols-4 h-fit py-15 gap-5 px-15">
+      <div className="col-start-1 col-end-3 row-start-1 row-end-2">
         <Image
           src={management}
-          alt="Management"
-          className="w-full h-full object-center rounded-lg object-cover"
-        />
-      </div>
-      <div className="col-start-2 col-end-3 row-start-1 row-end-2">
-        <Image
-          src={task}
           alt="Management"
           className="w-full rounded-lg h-full object-center object-cover"
         />
@@ -33,7 +25,6 @@ const HeroSection = () => {
           easy to navigate.
         </p>
       </div>
-      <div className="col-start-1 col-end-5 row-start-2 row-end-3 bg-foreground/50 h-30 rounded-md "></div>
     </div>
   );
 };

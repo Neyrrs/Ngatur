@@ -3,7 +3,7 @@
 import React from "react";
 import { LogOutIcon, Package } from "lucide-react";
 import Link from "next/link";
-import useUsers from "@/hooks/useUsers";
+import { useGetUser } from "@/hooks/useUsers";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -22,7 +22,7 @@ import ThemeButton from "@/components/ui/buttons/ThemeButton";
 
 const NavigationBar = () => {
   const navigate = useRouter();
-  const { user, loading } = useUsers();
+  const { user, loading } = useGetUser();
 
   if (loading) return <Loader />;
 

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import task from "@/assets/pictures/task.jpg";
+import task from "@/assets/pictures/management2.jpg";
 import React from "react";
 
 const About = () => {
@@ -15,13 +15,11 @@ const About = () => {
       <div className="h-fit w-screen flex justify-between gap-10 px-15 bg-[#222831]">
         <div className="flex flex-col text-white  gap-10 w-full h-full">
           <h1 className="text-6xl font-semibold">What is Ngatur all about?</h1>
-          <p className="w-3/4 text-lg ngaturDesc">
-            Ngatur Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            Quidem repellat qui quo dolor eveniet, consequuntur est laborum
-            suscipit quas, rem, soluta excepturi perspiciatis ratione non ut
-            distinctio fugit deserunt odio! is Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Laudantium iusto magni quis nesciunt,
-            sunt velit?
+          <p className="w-3/4 text-lg">
+            <strong> Ngatur </strong> is your digital life manager — track your
+            finances, organize tasks, and plan events effortlessly. Designed for
+            simplicity and flexibility, it empowers users to build better daily
+            habits.
           </p>
         </div>
         <Image

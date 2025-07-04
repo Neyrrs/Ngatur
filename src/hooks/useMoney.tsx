@@ -1,31 +1,33 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import type { IMoneySummaryResponse } from "@/types/moneyType";
+import type { IMoney, IMoneySummaryResponse } from "@/types/moneyType";
 
-function useMoney<T>({ endpoint }: { endpoint: string }) {
-  const [money, setMoney] = useState<T | null>();
+function useMoney<T>(endpoint: string) {
+  const [money, setMoney] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchMoney = async () => {
-      try {
-        const res = await axios.get(`/api/user/track/money/${endpoint}`);
-
-        setMoney(res?.data?.data);
-      } catch (err) {
-        setError(err.message || "Gagal mengambil data user");
-      } finally {
-        setLoading(false);
+  const fetchMoney = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`/api/user/track/money${endpoint}`);
+      setMoney(res.data?.data);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "Failed to fetch");
       }
-    };
-
-    fetchMoney();
+    } finally {
+      setLoading(false);
+    }
   }, [endpoint]);
 
-  return { money, loading, error };
+  useEffect(() => {
+    fetchMoney();
+  }, [fetchMoney]);
+
+  return { money, loading, error, refetch: fetchMoney };
 }
 
-export const useSummary = () => useMoney<IMoneySummaryResponse>({ endpoint: "summary" });
+export const useSummary = () => useMoney<IMoneySummaryResponse>("/summary");
+
+export const useGetMoney = () => useMoney<IMoney[]>("");

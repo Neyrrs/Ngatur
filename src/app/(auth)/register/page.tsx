@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
-import management from "@/assets/pictures/management.jpg";
+import management from "@/assets/pictures/management2.jpg";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { successSwal, errorSwal } from "@/utils/sweetAlert";

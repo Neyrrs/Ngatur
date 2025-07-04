@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useUsers from "@/hooks/useUsers";
+import { useGetUser } from "@/hooks/useUsers";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { successSwal, confirmSwal } from "@/utils/sweetAlert";
 import { useForm } from "react-hook-form";
@@ -10,28 +10,23 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-interface userProfile {
-  id: number;
-  username: string;
-  password: string;
-}
+import type { IUpdateProfile, IUpdateProfilePicture } from "@/types/userType";
 
 const Profile = () => {
-  const { user, loading } = useUsers();
+  const { user, loading, refetch } = useGetUser();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const {
     register: registerAccount,
     reset: resetAccount,
     handleSubmit: handleSubmitAccount,
-  } = useForm<userProfile>();
+  } = useForm<IUpdateProfile>();
 
   const {
     register: registerPhoto,
     handleSubmit: handleSubmitPhoto,
     watch,
-  } = useForm();
+  } = useForm<IUpdateProfilePicture>();
 
   const photoFile = watch("file");
 
@@ -55,7 +50,7 @@ const Profile = () => {
     }
   }, [photoFile]);
 
-  const submitProfile = async (data: userProfile) => {
+  const submitProfile = async (data: IUpdateProfile) => {
     try {
       const confirm = await confirmSwal("Update your profile?");
       if (!confirm) return;
@@ -68,10 +63,12 @@ const Profile = () => {
       if (response.status === 200) await successSwal();
     } catch (error) {
       console.error(error);
+    } finally {
+      refetch();
     }
   };
 
-  const submitProfilePicture = async (data) => {
+  const submitProfilePicture = async (data: IUpdateProfilePicture) => {
     const file = data.file?.[0];
     if (!file) return;
 
@@ -94,6 +91,8 @@ const Profile = () => {
       }
     } catch (err) {
       console.error("Upload failed:", err);
+    } finally {
+      refetch();
     }
   };
 

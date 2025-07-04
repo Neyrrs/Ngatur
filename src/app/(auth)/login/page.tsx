@@ -3,7 +3,7 @@
 import React from "react";
 import axios from "axios";
 import Link from "next/link";
-import management from "@/assets/pictures/management.jpg";
+import management from "@/assets/pictures/management2.jpg";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";

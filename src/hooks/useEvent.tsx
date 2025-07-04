@@ -1,31 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import type { IEventSummaryResponse } from "@/types/eventType";
+import type { IEvent, IEventSummaryResponse } from "@/types/eventType";
 
-function useEvent<T>({ endpoint }: { endpoint: string }) {
-  const [event, setEvent] = useState<T | null>();
+function useEvent<T>(endpoint: string) {
+  const [event, setEvent] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchevent = async () => {
-      try {
-        const res = await axios.get(`/api/user/track/event/${endpoint}`);
-
-        setEvent(res?.data?.data);
-      } catch (err) {
-        setError(err.message || "Gagal mengambil data user");
-      } finally {
-        setLoading(false);
+  const fetchEvent = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`/api/user/track/event/${endpoint}`);
+      setEvent(res?.data?.data);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "Failed to fetch");
+      } else {
+        setError("An unknown error occurred.");
       }
-    };
-
-    fetchevent();
+    } finally {
+      setLoading(false);
+    }
   }, [endpoint]);
 
-  return { event, loading, error };
+  useEffect(() => {
+    fetchEvent();
+  }, [fetchEvent]);
+
+  return { event, loading, error, refetch: fetchEvent };
 }
 
-export const useEventSummary = () => useEvent<IEventSummaryResponse>({ endpoint: "summary" });
+export const useEventSummary = () => useEvent<IEventSummaryResponse>("summary");
+export const useGetEvent = () => useEvent<IEvent[]>("");

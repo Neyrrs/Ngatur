@@ -65,12 +65,16 @@ export const GET = async (req) => {
 
   try {
     if (verify) {
-      const { data } = await supabase
+      const baseQuery = supabase
         .from("task")
         .select("*")
-        .eq("userId", verify?.id)
-        .gte("date", startDate)
-        .lte("date", endDate);
+        .eq("userId", verify?.id);
+
+      if (startDate && endDate) {
+        baseQuery.gte("date", startDate).lte("date", endDate);
+      }
+
+      const { data } = await baseQuery;
 
       return NextResponse.json(
         { data: data, message: "Insert success, recap inserted!" },

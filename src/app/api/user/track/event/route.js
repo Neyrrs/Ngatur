@@ -53,7 +53,10 @@ export const POST = async (req) => {
   }
 };
 
-export const GET = async () => {
+export const GET = async (req) => {
+  const { searchParams } = new URL(req.url);
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
   const token = await readCookieToken();
   const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -65,10 +68,16 @@ export const GET = async () => {
 
   try {
     if (verify) {
-      const { data } = await supabase
+      const baseQuery = supabase
         .from("event")
         .select("*")
         .eq("userId", verify?.id);
+
+      if (startDate && endDate) {
+        baseQuery.gte("date", startDate).lte("date", endDate);
+      }
+
+      const { data } = await baseQuery;
 
       return NextResponse.json(
         { data: data, message: "Insert success, recap inserted!" },

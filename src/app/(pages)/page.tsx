@@ -2,9 +2,9 @@
 
 import { Wallet, TabletSmartphone, Calendar1 } from "lucide-react";
 import MainCard from "@/components/layout/cards/MainCard";
-import useUsers from "@/hooks/useUsers";
+import { useGetUser } from "@/hooks/useUsers";
 import Image from "next/image";
-import management from "@/assets/pictures/management.jpg";
+import management2 from "@/assets/pictures/landing.jpg";
 import AuthGuard from "@/components/auth/AuthGuard";
 import Loader from "@/components/fragments/loaders/Loader";
 import HeroSection from "@/components/layout/hero/HeroSection";
@@ -14,7 +14,7 @@ import Footer from "@/components/layout/hero/Footer";
 import Link from "next/link";
 
 export default function Home() {
-  const { user, loading } = useUsers();
+  const { user, loading } = useGetUser();
 
   const cardData = [
     {
@@ -63,7 +63,7 @@ export default function Home() {
                   </div>
                 </div>
                 <Image
-                  src={management}
+                  src={management2}
                   alt="Management picture"
                   className="w-full rounded-xl border-4 border-[#471396] h-full object-center object-cover"
                 />
@@ -89,7 +89,7 @@ export default function Home() {
             <About />
             <HeroSection />
           </div>
-          <div className="w-full justify-center bg-[#222831] pt-15 pb-5 px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
+          <div className="w-ful justify-center bg-[#222831] pt-15 pb-5 px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
             <Footer />
             <GetInTouch />
             <p className="text-sm text-white font-thin">
