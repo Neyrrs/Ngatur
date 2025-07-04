@@ -61,7 +61,7 @@ export function ComboboxField({
       </PopoverTrigger>
       <PopoverContent className="w-fit p-0">
         <Command>
-          <CommandInput placeholder="Search..." />
+          <CommandInput placeholder="Search..." required/>
           <CommandList>
             <CommandEmpty>No option found.</CommandEmpty>
             <CommandGroup>

@@ -71,14 +71,15 @@ export const GET = async (req) => {
         .gte("date", startDate)
         .lte("date", endDate);
 
+      
       return NextResponse.json(
-        { data: data, message: "Insert success, recap inserted!" },
+        { data: data, message: "Read success, recap showed!" },
         { status: 200 }
       );
     }
   } catch (error) {
     return NextResponse.json(
-      { error: error.message, message: "Insert failed, something went wrong!" },
+      { error: error.message, message: "Read failed, something went wrong!" },
       { status: 500 }
     );
   }

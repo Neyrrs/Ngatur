@@ -15,10 +15,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import axios from "axios";
-import { Search, WalletIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Loader2,
+  Search,
+  Trash2,
+  WalletIcon,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import type { IResponseMoney, IMoney } from "@/types/moneyType";
+import type { IMoney, IMoneyResponse } from "@/types/moneyType";
+import { useSummary } from "@/hooks/useMoney";
 
 interface ISearchType {
   month: number;
@@ -32,90 +40,160 @@ interface IFormDataAdd {
   amount: number;
 }
 
-const comboBoxOption = {
-  month: [
-    { label: "Januari", value: 1 },
-    { label: "Februari", value: 2 },
-    { label: "Maret", value: 3 },
-    { label: "April", value: 4 },
-    { label: "Mei", value: 5 },
-    { label: "Juni", value: 6 },
-    { label: "Juli", value: 7 },
-    { label: "Agustus", value: 8 },
-    { label: "September", value: 9 },
-    { label: "Oktober", value: 10 },
-    { label: "November", value: 11 },
-    { label: "Desember", value: 12 },
-  ],
-  year: [{ label: "2025", value: 2025 }],
-};
-
 const Page = () => {
   const [data, setData] = useState<IMoney[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
+  const { money } = useSummary();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { control: searchControl, handleSubmit: handleSearchSubmit } =
     useForm<ISearchType>();
 
-  const { register: addData, handleSubmit: handleAddDataSubmit } =
-    useForm<IFormDataAdd>();
-
-  const fetchData = async () => {
-    const month = new Date().getMonth() + 1;
-    const year = new Date().getFullYear().toString();
-
-    const res = await axios.get<IResponseMoney>(`/api/user/track/money`, {
-      params: {
-        startDate: `${year}-${month.toString().padStart(2, "0")}-01`,
-        endDate: `${year}-${month.toString().padStart(2, "0")}-31`,
-      },
-    });
-    setData(res?.data?.data);
-  };
+  const {
+    register: addData,
+    handleSubmit: handleAddDataSubmit,
+    reset: resetData,
+  } = useForm<IFormDataAdd>();
 
   useEffect(() => {
-    fetchData();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    const startDate = `${year}-${month.toString().padStart(2, "0")}-01`;
+    const lastDay = new Date(year, month, 0).getDate().toString();
+    const endDate = `${year}-${month.toString().padStart(2, "0")}-${lastDay
+      .toString()
+      .padStart(2, "0")}`;
+    setDateRange({ startDate, endDate });
+    getMoneyData(startDate, endDate);
   }, []);
 
-  const onSearch = async (data: ISearchType) => {
+  const itemPerPage = 5;
+  const totalPages = Math.ceil(data.length / itemPerPage);
+  const paginatedData = data?.slice(
+    (currentPage - 1) * itemPerPage,
+    currentPage * itemPerPage
+  );
+
+  const daily = money?.daily;
+  const monthly = money?.monthly;
+  const yearly = money?.yearly;
+
+  const comboBoxOption = {
+    month: [
+      { label: "Januari", value: 1 },
+      { label: "Februari", value: 2 },
+      { label: "Maret", value: 3 },
+      { label: "April", value: 4 },
+      { label: "Mei", value: 5 },
+      { label: "Juni", value: 6 },
+      { label: "Juli", value: 7 },
+      { label: "Agustus", value: 8 },
+      { label: "September", value: 9 },
+      { label: "Oktober", value: 10 },
+      { label: "November", value: 11 },
+      { label: "Desember", value: 12 },
+    ],
+    year: [{ label: "2025", value: 2025 }],
+  };
+
+  const getMoneyData = async (startDate: string, endDate: string) => {
     try {
-      const month = data.month.toString().padStart(2, "0");
-      const res = await axios.get<IResponseMoney>(`/api/user/track/money`, {
-        params: {
-          startDate: `${data.year}-${month}-01`,
-          endDate: `${data.year}-${month}-31`,
-        },
+      const res = await axios.get<IMoneyResponse>(`/api/user/track/money`, {
+        params: { startDate, endDate },
       });
       setData(res?.data?.data);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Fetch money failed:", err);
+    }
+  };
+
+  const secondaryCardContent = [
+    {
+      count: daily?.count || 0,
+      title: "Daily Recap",
+      description: `Yo've reach ${daily?.count} racaps today! `,
+    },
+    {
+      count: monthly?.count || 0,
+      title: "Monthly Recap",
+      description: `Yo've reach ${monthly?.count} racaps this month! `,
+    },
+    {
+      count: yearly?.count || 0,
+      title: "Yearly Recap",
+      description: `Yo've reach ${yearly?.count} racaps this year! `,
+    },
+  ];
+
+  const onSearch = async (data: ISearchType) => {
+    if (data.year && data.month) {
+      try {
+        setLoading(true);
+        const month = data.month.toString().padStart(2, "0");
+
+        const lastDay = new Date(data.year, data.month, 0).getDate();
+        const startDate = `${data.year}-${month}-01`;
+        const endDate = `${data.year}-${month}-${lastDay
+          .toString()
+          .padStart(2, "0")}`;
+
+        await getMoneyData(startDate, endDate);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const onSubmit = async (data: IFormDataAdd) => {
-    const res = await axios.post(`/api/user/track/money`, {
-      name: data.name,
-      status: data.status,
-      date: data.date,
-      amount: data.amount,
-    });
-    const dataRes = res?.data?.data;
-    console.log(dataRes);
-    setData((prev) => [...prev, dataRes]);
+    try {
+      setLoading(true);
+      const res = await axios.post(`/api/user/track/money`, {
+        name: data.name,
+        status: data.status,
+        date: data.date,
+        amount: data.amount,
+      });
+      const dataRes = res?.data?.data;
+      setData((prev) => [...prev, dataRes]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      resetData();
+      setLoading(false);
+    }
   };
+
+  const onDelete = async (id: number) => {
+    try {
+      await axios.delete(`/api/user/track/money/${id}`);
+      await getMoneyData(dateRange.startDate, dateRange.endDate);
+    } catch (err) {
+      console.error("Fetch money failed:", err);
+    }
+  };
+
+  // TODO 2. buat semua tracker punya sistem tabel yang udah bener
 
   return (
     <div className="flex w-full h-full pl-15 gap-5">
       <main className="w-2/3 bg-background flex flex-col gap-8 py-5 pr-4 overflow-y-auto">
         <div className="flex items-center w-fit h-fit">
           <WalletIcon size={60} />
-          <h1 className="text-7xl flex ml-4">{"100,000,00"}</h1>
+          <h1 className="text-7xl flex ml-4">
+            {data.reduce((total, item) => total + item.amount, 0).toLocaleString("en-US")}
+          </h1>
         </div>
 
         <div className="flex justify-between flex-wrap">
-          {Array.from({ length: 3 }).map((_, index) => (
+          {secondaryCardContent.map((item, index) => (
             <SecondaryCard
               key={index + 1}
-              count={index + 1}
-              title="Ini Judul"
-              description="Ini Deskripsi"
+              count={item?.count}
+              title={item?.title}
+              description={item.description}
             />
           ))}
         </div>
@@ -142,7 +220,11 @@ const Page = () => {
                 name="year"
               />
               <Button size={"icon"}>
-                <Search size={25} />
+                {!loading ? (
+                  <Search size={25} />
+                ) : (
+                  <Loader2 className="animate-spin" />
+                )}
               </Button>
             </form>
           </div>
@@ -156,38 +238,35 @@ const Page = () => {
                   <TableHead>Status</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Amount</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
-                {data?.map((item, index) => (
+                {paginatedData?.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                    <TableCell>{item.date}</TableCell>
-                    <TableCell>{item.amount}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-              {/* <TableBody>
-                {data?.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                    <TableCell>{item.type}</TableCell>
-                    <TableCell className="max-w-sm break-words whitespace-normal">
-                      {item.description}
+                    <TableCell>{item?.name}</TableCell>
+                    <TableCell>{item?.status}</TableCell>
+                    <TableCell>{item?.date}</TableCell>
+                    <TableCell>{item?.amount}</TableCell>
+                    <TableCell className="w-10">
+                      <Button
+                        variant={"destructive"}
+                        size={"icon"}
+                        onClick={() => onDelete(item.id)}
+                      >
+                        <Trash2 />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
-              </TableBody> */}
+              </TableBody>
 
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={4}>Total</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right" colSpan={2}>
                     {data?.length || "0"}
                   </TableCell>
                 </TableRow>
@@ -196,8 +275,24 @@ const Page = () => {
           </div>
 
           <div className="flex justify-center gap-2 items-center">
-            <Button variant="default">Previous</Button>
-            <Button variant="default">Next</Button>
+            <Button
+              variant="default"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              size={"icon"}
+            >
+              <ArrowLeft />
+            </Button>
+            <Button variant={"outline"} className="font-semibold">
+              {currentPage} of {totalPages}
+            </Button>
+            <Button
+              variant="default"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              <ArrowRight />
+            </Button>
           </div>
         </div>
       </main>
@@ -216,7 +311,9 @@ const Page = () => {
           <Input {...addData("date")} type="date" />
           <Label>Amount</Label>
           <Input {...addData("amount")} type="number" />
-          <Button>Save</Button>
+          <Button size={"sm"} disabled={loading}>
+            {!loading ? "Save" : <Loader2 className="animate-spin" />}
+          </Button>
         </form>
       </aside>
     </div>

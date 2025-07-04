@@ -7,9 +7,7 @@ export const POST = async (req) => {
   const body = await req.json();
   const { name, type, location, date } = body;
 
-  // const token = await readCookieToken();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJFendhbklibnUiLCJwcm9maWxlIjoiaHR0cHM6Ly9yZXMuY2xvdWRpbmFyeS5jb20vZGh2bm55MnYyL2ltYWdlL3VwbG9hZC92MTc1MDUwNDQ3MC9wcm9maWxlX3BpY3R1cmVzL2E1eHBkZmZjZWJ5cGhxa3B6aG15LmpwZyIsImlhdCI6MTc1MTQ5ODcyMywiZXhwIjoxNzUxNTg1MTIzfQ.TM-xyKHBgMG9cNHzJz8y7qHxWrik8ksSTIMvPYvuBLg";
+  const token = await readCookieToken();
   const JWT_SECRET = process.env.JWT_SECRET;
 
   if (!token || !JWT_SECRET) {

@@ -1,12 +1,23 @@
-export interface IMoney{
-    id: number,
-    userId: number,
-    name: string,
-    status: string,
-    date: string,
-    amount: number
+export interface IMoney {
+  id: number;
+  userId: number;
+  name: string;
+  status: string;
+  date: string;
+  amount: number;
 }
 
-export interface IResponseMoney{
-    data: Array<IMoney>
+interface ISummarySection {
+  count: number;
+  data: IMoney[];
+}
+
+export interface IMoneyResponse {
+  data: IMoney[];
+}
+
+export interface IMoneySummaryResponse {
+  daily: ISummarySection;
+  monthly: ISummarySection;
+  yearly: ISummarySection;
 }
