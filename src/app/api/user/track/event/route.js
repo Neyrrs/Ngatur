@@ -17,15 +17,19 @@ export const POST = async (req) => {
   const verify = jwt.verify(token, JWT_SECRET);
 
   try {
-    const { error } = await supabase.from("event").insert([
-      {
-        userId: verify?.id,
-        name: name,
-        type: type,
-        location: location,
-        date: date,
-      },
-    ]);
+    const { error, data } = await supabase
+      .from("event")
+      .insert([
+        {
+          userId: verify?.id,
+          name: name,
+          type: type,
+          location: location,
+          date: date,
+        },
+      ])
+      .select()
+      .single();
 
     if (error) {
       return NextResponse.json(
@@ -38,7 +42,7 @@ export const POST = async (req) => {
     }
 
     return NextResponse.json(
-      { message: "Insert success, recap inserted!" },
+      { data: data, message: "Insert success, recap inserted!" },
       { status: 200 }
     );
   } catch (error) {
@@ -65,8 +69,6 @@ export const GET = async () => {
         .from("event")
         .select("*")
         .eq("userId", verify?.id);
-      // .gte("date", `2025-06-01`)
-      // .lte("date", `2025-06-30`);
 
       return NextResponse.json(
         { data: data, message: "Insert success, recap inserted!" },

@@ -53,7 +53,7 @@ export function ComboboxField({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-fit justify-between"
+          className="w-min-120 justify-between"
         >
           {selectedLabel || placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
