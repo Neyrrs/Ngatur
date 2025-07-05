@@ -48,25 +48,41 @@ const Register = () => {
 
   return (
     <div className="h-screen w-screen bg-background flex items-center justify-center">
-      <div className="bg-secondary w-fit h-90 justify-center shadow-xl flex flex-row-reverse rounded-lg gap-y-1">
-        <div className="flex w-90 h-full flex-col justify-center px-10 gap-5 py-10">
-          <h1 className="text-3xl font-medium">Register</h1>
+      <div className="bg-secondary w-90 md:w-fit h-90 justify-center shadow-xl flex rounded-lg gap-y-1">
+        <div className="flex w-full md:w-90 h-full flex-col justify-center px-10 gap-5 py-10">
+          <h1 className="text-2xl md:text-3xl font-medium">Register</h1>
           <form
-            className="flex flex-col w-full h-full gap-2"
+            className="flex flex-col w-full h-full gap-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Label htmlFor="username">Username</Label>
-            <Input {...register("username")} placeholder="John Doe" />
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="username" className="text-sm md:text-base">
+              Username
+            </Label>
+            <Input
+              {...register("username")}
+              id="username"
+              placeholder="John Doe"
+              className="text-sm md:text-base"
+              required
+            />
+
+            <Label htmlFor="password" className="text-sm md:text-base">
+              Password
+            </Label>
             <Input
               type="password"
               id="password"
               {...register("password")}
               placeholder="******"
+              className="text-sm md:text-base"
               required
             />
-            <Button variant={"default"}>Register</Button>
-            <p className="text-xs text-center">
+
+            <Button variant={"default"} className="text-sm md:text-base">
+              Register
+            </Button>
+
+            <p className="text-xs md:text-sm text-center">
               Already have an account?{" "}
               <Link href={"/login"} className="underline text-primary">
                 Sign in
@@ -74,12 +90,14 @@ const Register = () => {
             </p>
           </form>
         </div>
-        <div className="h-full w-fit rounded-lg">
+
+        {/* Image */}
+        <div className="h-full w-fit rounded-lg md:block hidden">
           <Image
             src={management}
-            alt="loginImage"
+            alt="registerImage"
             width={300}
-            className="h-full object-cover object-center rounded-l-lg"
+            className="h-full object-cover object-center rounded-r-lg"
           />
         </div>
       </div>

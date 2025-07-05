@@ -44,8 +44,8 @@ const Login = () => {
 
   return (
     <div className="h-screen w-screen bg-background flex items-center justify-center">
-      <div className="bg-secondary w-85 md:w-fit h-90 justify-center shadow-xl flex rounded-lg gap-y-1">
-        <div className="flex w-full md:w-90 h-full flex-col justify-center px-5 md:px-10 gap-5 py-10">
+      <div className="bg-secondary w-90 md:w-fit h-90 justify-center shadow-xl flex rounded-lg gap-y-1">
+        <div className="flex w-full md:w-90 h-full flex-col justify-center px-10 gap-5 py-10">
           <h1 className="text-2xl md:text-3xl font-medium">Login</h1>
           <form
             className="flex flex-col w-full h-full gap-3"

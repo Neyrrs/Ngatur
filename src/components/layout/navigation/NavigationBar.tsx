@@ -49,7 +49,7 @@ const NavigationBar = () => {
           <Package width={30} height={30} color="#471396" />
           <p className="text-2xl font-medium">Ngatur</p>
         </Link>
-        <div className="w-fit h-full flex justify-center items-center gap-5">
+        <div className="w-fit h-full md:flex justify-center items-center text-base gap-5 hidden">
           <Link href={"/moneyTrack"}>Money Tracker</Link>
           <Link href={"/taskTrack"}>Task Tracker</Link>
           <Link href={"/eventTrack"}>Event Tracker</Link>
@@ -75,6 +75,21 @@ const NavigationBar = () => {
                     className="flex gap-5 items-center h-full justify-between w-full"
                   >
                     <p className="text-base font-normal">Profile</p>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={"/taskTrack"} className="block md:hidden">
+                    <p className="text-base font-normal">Task Tracker</p>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={"/moneyTrack"} className="block md:hidden">
+                    <p className="text-base font-normal">Money Tracker</p>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={"/eventTrack"} className="block md:hidden">
+                    <p className="text-base font-normal">Event Tracker</p>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>

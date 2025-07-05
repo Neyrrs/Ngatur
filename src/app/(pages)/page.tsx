@@ -48,31 +48,33 @@ export default function Home() {
         <div className="w-screen bg-background h-screen flex-col flex mt-15">
           <div className="flex h-fit py-5 w-full px-15 border-b-2 text-black border-foreground">
             <div className="py-2 flex-col flex gap-2 w-full h-fit">
-              <div className="flex flex-row justify-between w-full h-45">
-                <div className="flex flex-col h-full w-full gap-2">
-                  <h1 className="text-7xl text-foreground font-semibold w-fit">
+              <div className="flex flex-row justify-between w-full md:h-45">
+                <div className="flex flex-col md:h-full h-fit w-full gap-2">
+                  <h1 className="md:text-6xl text-4xl text-foreground font-semibold w-fit">
                     Welcome back
                   </h1>
-                  <h2 className="text-[#471396] text-5xl font-semibold">
+                  <h2 className="text-[#471396] md:text-5xl text-2xl font-semibold">
                     {user?.username} <span className="text-foreground">! </span>
                   </h2>
                   <div className="flex flex-col h-full justify-end">
-                    <p className="text-2xl font-normal text-foreground">
+                    <p className="text-base md:text-2xl font-normal text-foreground">
                       Let`s start to manage ur life
                     </p>
                   </div>
                 </div>
-                <Image
-                  src={management2}
-                  alt="Management picture"
-                  className="w-full rounded-xl border-4 border-[#471396] h-full object-center object-cover"
-                />
+                <div className="md:w-1/2 w-1/2 md:h-full  h-fit">
+                  <Image
+                    src={management2}
+                    alt="Management picture"
+                    className="w-full rounded-xl border-4 border-[#471396] h-full object-center object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="py-5 px-15 flex gap-5 h-full w-full">
-            <div className="w-full h-fit flex flex-wrap gap-5 justify-between gap-y-10">
+            <div className="w-full h-fit flex flex-wrap gap-5 justify-center md:justify-between gap-y-10">
               {cardData.map((item) => (
                 <Link key={item.title} href={item.link}>
                   <MainCard
@@ -89,7 +91,7 @@ export default function Home() {
             <About />
             <HeroSection />
           </div>
-          <div className="w-ful justify-center bg-[#222831] pt-15 pb-5 px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
+          <div className="w-ful justify-center bg-[#222831] pt-15 pb-5 px-5 md:px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
             <Footer />
             <GetInTouch />
             <p className="text-sm text-white font-thin">
