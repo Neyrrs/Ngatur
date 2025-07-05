@@ -111,14 +111,14 @@ const Profile = () => {
 
   return (
     <AuthGuard>
-      <div className="h-screen w-screen bg-background text-foreground flex items-center justify-center">
+      <div className="h-screen w-screen bg-background text-foreground flex items-center justify-center md:px-0 px-5">
         <div className="bg-secondary text-foreground w-fit h-95 shadow-xl/30 flex flex-row rounded-xl border border-border">
           <form
-            className="h-full gap-3 w-fit flex-col bg-primary text-primary-foreground rounded-l-md flex items-center justify-center px-10 py-10 border-r border-border"
+            className="h-full gap-3 w-fit flex-col bg-primary text-primary-foreground rounded-l-md flex items-center justify-center px-5 md:px-10 py-10 border-r border-border"
             onSubmit={handleSubmitPhoto(submitProfilePicture)}
             encType="multipart/form-data"
           >
-            <div className="w-40 h-40 rounded-full border border-secondary overflow-hidden">
+            <div className="w-35 h-35 md:w-40 md:h-40 rounded-full border border-secondary overflow-hidden">
               {previewImage ? (
                 <Image
                   src={previewImage}
@@ -143,7 +143,7 @@ const Profile = () => {
             <Button variant={"secondary"}>Submit</Button>
           </form>
 
-          <div className="flex flex-col gap-y-2 w-full h-full rounded-r-md px-10 py-10 bg-background text-foreground">
+          <div className="flex flex-col gap-y-2 w-full h-full rounded-r-md px-5 md:px-10 py-10 bg-background text-foreground">
             <h2 className="text-xl font-semibold mb-2">Your ID Card</h2>
             <form
               className="flex flex-col gap-y-2"

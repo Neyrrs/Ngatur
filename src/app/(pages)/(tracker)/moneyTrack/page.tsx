@@ -90,11 +90,11 @@ const Page = () => {
       { label: "May", value: 5 },
       { label: "June", value: 6 },
       { label: "July", value: 7 },
-      { label: "Agust", value: 8 },
+      { label: "August", value: 8 },
       { label: "September", value: 9 },
-      { label: "Oktober", value: 10 },
+      { label: "October", value: 10 },
       { label: "November", value: 11 },
-      { label: "Desember", value: 12 },
+      { label: "December", value: 12 },
     ],
     year: [{ label: "2025", value: 2025 }],
     status: [
@@ -118,17 +118,17 @@ const Page = () => {
     {
       count: daily?.count || 0,
       title: "Daily Recap",
-      description: `Yo've reached ${daily?.count} racaps today! `,
+      description: `You've reached ${daily?.count} recap(s) today!`,
     },
     {
       count: monthly?.count || 0,
       title: "Monthly Recap",
-      description: `Yo've reached ${monthly?.count} racaps this month! `,
+      description: `You've reached ${monthly?.count} recap(s) this month!`,
     },
     {
       count: yearly?.count || 0,
       title: "Yearly Recap",
-      description: `Yo've reached ${yearly?.count} racaps this year! `,
+      description: `You've reached ${yearly?.count} recap(s) this year!`,
     },
   ];
 
@@ -149,6 +149,7 @@ const Page = () => {
       } finally {
         await Promise.all([refetch(), refetchAmount()]);
         setLoading(false);
+        setCurrentPage(1);
       }
     }
   };
@@ -156,12 +157,7 @@ const Page = () => {
   const onSubmit = async (data: IFormDataAdd) => {
     try {
       setLoading(true);
-      const res = await axios.post(`/api/user/track/money`, {
-        name: data.name,
-        status: data.status,
-        date: data.date,
-        amount: data.amount,
-      });
+      const res = await axios.post(`/api/user/track/money`, data);
       const dataRes = res?.data?.data;
       setData((prev) => [...prev, dataRes]);
     } catch {
@@ -196,16 +192,9 @@ const Page = () => {
   };
 
   return (
-    <div className="flex w-full h-full pl-15 gap-5">
-      <main className="w-2/3 bg-background flex flex-col gap-8 py-5 pr-4 overflow-y-auto">
-        <div className="flex items-center w-fit h-fit">
-          <WalletIcon size={60} />
-          <h1 className="text-7xl flex ml-4">
-            {amount ? calculateBalance(amount) : 0}
-          </h1>
-        </div>
-
-        <div className="flex justify-between flex-wrap">
+    <div className="w-full h-full flex md:flex-row flex-col md:pl-15 md:gap-10">
+      <main className="h-full px-15 md:px-0 py-5 md:w-2/3 w-full text-foreground overflow-y-scroll flex flex-col-reverse gap-5">
+        <div className="flex justify-between flex-wrap gap-y-5">
           {secondaryCardContent.map((item, index) => (
             <SecondaryCard
               key={index + 1}
@@ -263,7 +252,9 @@ const Page = () => {
               <TableBody>
                 {paginatedData?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      {(currentPage - 1) * itemPerPage + index + 1}
+                    </TableCell>
                     <TableCell>{item?.name}</TableCell>
                     <TableCell>{item?.status}</TableCell>
                     <TableCell>{item?.date}</TableCell>
@@ -314,9 +305,15 @@ const Page = () => {
             </Button>
           </div>
         </div>
+          <div className="flex items-center w-fit h-fit">
+            <WalletIcon size={60} />
+            <h1 className="text-7xl flex ml-4">
+              {amount ? calculateBalance(amount) : 0}
+            </h1>
+          </div>
       </main>
 
-      <aside className="bg-secondary w-1/3 p-5 flex flex-col h-full gap-5 text-foreground">
+      <aside className="bg-secondary w-full md:w-1/3 p-5 flex flex-col h-fit md:h-full gap-5 text-foreground">
         <h1 className="font-semibold text-2xl">Quick Add</h1>
         <form
           className="flex flex-col gap-2"

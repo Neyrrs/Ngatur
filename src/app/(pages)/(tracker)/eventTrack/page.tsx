@@ -144,9 +144,9 @@ const Page = () => {
       } catch {
         successToast({ title: "Failed to delete, something is wrong" });
       } finally {
-        successToast({ title: "Task deleted" });
-        setLoading(true);
+        successToast({ title: "Event deleted" });
         await Promise.all([refetch(), refetchAllEvent()]);
+        setLoading(false);
       }
     }
   };
@@ -187,10 +187,11 @@ const Page = () => {
   ];
 
   return (
-    <div className="flex w-full h-full pl-15 gap-5">
-      <div className="h-full py-5 w-2/3 text-foreground overflow-y-scroll flex flex-col gap-5">
-        <div className="flex gap-5 w-full h-fit items-center">
-          <div className="w-fit">
+    <div className="w-full h-full  flex md:flex-row flex-col md:pl-15 md:gap-10 gap-5">
+      {/* Main Content */}
+      <main className="h-full py-5 px-15 md:px-0 md:w-2/3 w-full text-foreground overflow-y-scroll flex flex-col gap-5">
+        <div className="flex flex-row md:gap-5 gap-1 w-full h-fit items-center">
+          <div className="w-full md:w-fit">
             <Calendar
               mode="single"
               className="rounded-md border-primary border-2 shadow-md"
@@ -198,8 +199,8 @@ const Page = () => {
               disableNavigation
             />
           </div>
-          <div className="w-1/2 flex flex-col gap-5">
-            <h1 className="text-5xl font-bold text-justify">
+          <div className="w-fit md:w-1/2 flex flex-col gap-5">
+            <h1 className="text-4xl md:text-5xl font-bold text-justify">
               What{"'"}s your plan this month?
             </h1>
             <p className="text-secondary-foreground text-justify">
@@ -208,22 +209,6 @@ const Page = () => {
             </p>
           </div>
         </div>
-
-        <div className="flex justify-between flex-wrap">
-          {secondaryCardContent.map((item, index) => (
-            <div
-              key={index}
-              className="border-primary border-2 rounded-md p-4 w-[48%] shadow-sm"
-            >
-              <h2 className="text-lg font-bold">{item.title}</h2>
-              <p className="text-2xl font-semibold">{item.count}</p>
-              <p className="text-sm text-muted-foreground">
-                {item.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
         <div className="p-5 border-primary border-2 rounded-md flex flex-col gap-4">
           <div className="flex w-full items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
@@ -257,7 +242,6 @@ const Page = () => {
               </Button>
             </form>
           </div>
-
           <Table className="max-h-50">
             <TableHeader>
               <TableRow>
@@ -323,15 +307,27 @@ const Page = () => {
           </div>
         </div>
 
-        {/* <h2 className="text-center text-4xl font-semibold">Analytics</h2>
-        <div className="flex p-5 w-full min-h-80 rounded-md border-2 border-primary"></div> */}
-      </div>
+        <div className="flex justify-between flex-wrap gap-5">
+          {secondaryCardContent.map((item, index) => (
+            <div
+              key={index}
+              className="border-primary border-2 rounded-md p-4 w-full md:w-[48%] shadow-sm"
+            >
+              <h2 className="text-lg font-bold">{item.title}</h2>
+              <p className="text-2xl font-semibold">{item.count}</p>
+              <p className="text-sm text-muted-foreground">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
 
-      <div className="bg-secondary w-1/3 p-5 flex flex-col h-full gap-5 text-foreground">
+      <aside className="bg-secondary w-full md:w-1/3 p-5 flex flex-col h-fit md:h-full gap-5 text-foreground">
         <h1 className="font-semibold text-2xl">Quick Add</h1>
         <form
           onSubmit={handleAddDataSubmit(onSubmit)}
-          className="flex flex-col gap-2 "
+          className="flex flex-col gap-2"
         >
           <Label>Name</Label>
           <Input {...addData("name")} />
@@ -355,7 +351,7 @@ const Page = () => {
             {!loading ? "Save" : <Loader2 className="animate-spin" />}
           </Button>
         </form>
-      </div>
+      </aside>
     </div>
   );
 };

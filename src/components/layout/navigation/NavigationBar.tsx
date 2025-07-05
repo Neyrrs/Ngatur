@@ -19,10 +19,12 @@ import {
 import Loader from "@/components/fragments/loaders/Loader";
 import ThemeButton from "@/components/ui/buttons/ThemeButton";
 import { confirmDialog } from "@/components/ui/alert";
+import { useIsMobile } from "@/lib/isMobile";
 
 const NavigationBar = () => {
   const navigate = useRouter();
   const { user, loading } = useGetUser();
+  const isMobile = useIsMobile();
 
   if (loading) return <Loader />;
 
@@ -77,21 +79,27 @@ const NavigationBar = () => {
                     <p className="text-base font-normal">Profile</p>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={"/taskTrack"} className="block md:hidden">
-                    <p className="text-base font-normal">Task Tracker</p>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={"/moneyTrack"} className="block md:hidden">
-                    <p className="text-base font-normal">Money Tracker</p>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={"/eventTrack"} className="block md:hidden">
-                    <p className="text-base font-normal">Event Tracker</p>
-                  </Link>
-                </DropdownMenuItem>
+
+                {isMobile && (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href={"/moneyTrack"} className="block md:hidden">
+                        <p className="text-base font-normal">Money Tracker</p>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/taskTrack"} className="block md:hidden">
+                        <p className="text-base font-normal">Task Tracker</p>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={"/eventTrack"} className="block md:hidden">
+                        <p className="text-base font-normal">Event Tracker</p>
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+
                 <DropdownMenuItem onClick={handleLogout}>
                   <div className="flex justify-between items-center w-full">
                     <p className="">Logout</p>
