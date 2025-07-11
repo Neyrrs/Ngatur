@@ -13,6 +13,8 @@ import GetInTouch from "@/components/layout/hero/GetInTouch";
 import Footer from "@/components/layout/hero/Footer";
 import Link from "next/link";
 
+// TODO Buat seluruh page menjadi responsive dengan ukuran samsung galaxy S8+
+
 export default function Home() {
   const { user, loading } = useGetUser();
 
@@ -46,23 +48,23 @@ export default function Home() {
     <>
       <AuthGuard>
         <div className="w-screen bg-background h-screen flex-col flex mt-15">
-          <div className="flex h-fit py-5 w-full px-15 border-b-2 text-black border-foreground">
+          <div className="flex h-fit py-5 w-full px-5 md:px-15 border-b-2 text-black border-foreground">
             <div className="py-2 flex-col flex gap-2 w-full h-fit">
               <div className="flex flex-row justify-between w-full md:h-45">
-                <div className="flex flex-col md:h-full h-fit w-full gap-2">
-                  <h1 className="md:text-6xl text-4xl text-foreground font-semibold w-fit">
+                <div className="flex flex-col md:h-full h-fit w-full gap-1 md:gap-2">
+                  <h1 className="md:text-6xl text-2xl text-foreground font-semibold w-fit">
                     Welcome back
                   </h1>
-                  <h2 className="text-[#471396] md:text-5xl text-2xl font-semibold">
+                  <h2 className="text-[#471396] md:text-5xl text-lg font-semibold">
                     {user?.username} <span className="text-foreground">! </span>
                   </h2>
                   <div className="flex flex-col h-full justify-end">
-                    <p className="text-base md:text-2xl font-normal text-foreground">
+                    <p className="text-xs md:text-2xl font-normal text-foreground">
                       Let`s start to manage ur life
                     </p>
                   </div>
                 </div>
-                <div className="md:w-1/2 w-1/2 md:h-full  h-fit">
+                <div className="md:w-1/2 w-1/2 md:h-full h-full">
                   <Image
                     src={management2}
                     alt="Management picture"

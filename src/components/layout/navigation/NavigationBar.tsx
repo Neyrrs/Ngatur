@@ -21,6 +21,8 @@ import ThemeButton from "@/components/ui/buttons/ThemeButton";
 import { confirmDialog } from "@/components/ui/alert";
 import { useIsMobile } from "@/lib/isMobile";
 
+// TODO Buat alert logoutnya sesuai teksnya
+
 const NavigationBar = () => {
   const navigate = useRouter();
   const { user, loading } = useGetUser();
@@ -30,8 +32,8 @@ const NavigationBar = () => {
 
   const handleLogout = async () => {
     const result = await confirmDialog(
-      "Delete Item?",
-      "This action cannot be undone!"
+      "Want to logout?",
+      "!"
     );
 
     if (result) {
@@ -46,7 +48,7 @@ const NavigationBar = () => {
   };
   return (
     <div className="fixed top-0 w-screen z-20">
-      <div className="flex bg-[#222831]/95 backdrop:blur-2xl z-50 text-white w-full h-15 items-center px-15 justify-between">
+      <div className="flex bg-[#222831]/95 backdrop:blur-2xl z-50 text-white w-full h-15 items-center px-5 md:px-15 justify-between">
         <Link href={"/"} className="flex gap-2 items-center">
           <Package width={30} height={30} color="#471396" />
           <p className="text-2xl font-medium">Ngatur</p>

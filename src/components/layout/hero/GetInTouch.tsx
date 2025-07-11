@@ -24,6 +24,8 @@ import {
 import { ArrowDownCircle, Github, Instagram } from "lucide-react";
 
 const GetInTouch = () => {
+  // TODO Buat menjadi sistem form yang bisa send langsung ke email saat klik button message me
+  // TODO Buat setiap social media yang keluar di drop down itu langsung link ke webnya / accountnya
   return (
     <div className="col-start-2 row-start-1">
       <Card className="w-full h-full bg-background">
