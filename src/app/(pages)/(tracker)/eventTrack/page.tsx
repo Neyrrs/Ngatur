@@ -187,10 +187,9 @@ const Page = () => {
   ];
 
   return (
-    <div className="w-full h-full  flex md:flex-row flex-col md:pl-15 md:gap-10 gap-5">
-      {/* Main Content */}
-      <main className="h-full py-5 px-15 md:px-0 md:w-2/3 w-full text-foreground overflow-y-scroll flex flex-col gap-5">
-        <div className="flex flex-row md:gap-5 gap-1 w-full h-fit items-center">
+    <div className="w-full h-full flex flex-col md:flex-row md:gap-10 gap-5 md:pl-10">
+      <main className="h-full py-5 px-5 md:px-0 md:w-2/3 w-full text-foreground flex flex-col gap-5 overflow-y-auto">
+        <div className="flex flex-col-reverse md:flex-row md:gap-5 gap-3 w-full items-center">
           <div className="w-full md:w-fit">
             <Calendar
               mode="single"
@@ -199,8 +198,8 @@ const Page = () => {
               disableNavigation
             />
           </div>
-          <div className="w-fit md:w-1/2 flex flex-col gap-5">
-            <h1 className="text-4xl md:text-5xl font-bold text-justify">
+          <div className="w-full md:w-1/2 flex flex-col gap-5">
+            <h1 className="text-3xl md:text-5xl font-bold text-justify">
               What{"'"}s your plan this month?
             </h1>
             <p className="text-secondary-foreground text-justify">
@@ -209,6 +208,7 @@ const Page = () => {
             </p>
           </div>
         </div>
+
         <div className="p-5 border-primary border-2 rounded-md flex flex-col gap-4">
           <div className="flex w-full items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
@@ -219,7 +219,7 @@ const Page = () => {
             </div>
             <form
               onSubmit={handleSearchSubmit(onSearch)}
-              className="flex gap-3 items-center"
+              className="flex flex-wrap gap-3 items-center"
             >
               <ComboboxField
                 options={comboBoxOption.month}
@@ -242,53 +242,56 @@ const Page = () => {
               </Button>
             </form>
           </div>
-          <Table className="max-h-50">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">No</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
 
-            <TableBody>
-              {paginatedData.map((item, idx) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    {(currentPage - 1) * itemPerPage + idx + 1}
-                  </TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.location}</TableCell>
-                  <TableCell>{item.date}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      disabled={loading}
-                      onClick={() => onDelete(item.id)}
-                    >
-                      <Trash2 size={18} />
-                    </Button>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">No</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {paginatedData.map((item, idx) => (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      {(currentPage - 1) * itemPerPage + idx + 1}
+                    </TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.type}</TableCell>
+                    <TableCell>{item.location}</TableCell>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        disabled={loading}
+                        onClick={() => onDelete(item.id)}
+                      >
+                        <Trash2 size={18} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+
+              <TableFooter>
+                <TableRow>
+                  <TableCell colSpan={5}>Total Events</TableCell>
+                  <TableCell className="text-right">
+                    {allEvent?.length || 0}
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
+              </TableFooter>
+            </Table>
+          </div>
 
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={5}>Total Events</TableCell>
-                <TableCell className="text-right">
-                  {allEvent?.length || 0}
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
-
-          <div className="flex w-full h-fit justify-center gap-2 items-center">
+          <div className="flex justify-center gap-2 items-center">
             <Button
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
@@ -323,11 +326,11 @@ const Page = () => {
         </div>
       </main>
 
-      <aside className="bg-secondary w-full md:w-1/3 p-5 flex flex-col h-fit md:h-full gap-5 text-foreground">
+      <aside className="bg-secondary w-full md:w-1/3 md:h-auto h-70 overflow-y-scroll p-5 flex flex-col gap-5 text-foreground border-t-4 md:border-t-0 md:border-l-4 border-primary">
         <h1 className="font-semibold text-2xl">Quick Add</h1>
         <form
           onSubmit={handleAddDataSubmit(onSubmit)}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-3"
         >
           <Label>Name</Label>
           <Input {...addData("name")} />
