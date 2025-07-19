@@ -33,6 +33,7 @@ import { usePaginatedData } from "@/utils/paginatedData";
 import DatePickerField from "@/components/ui/date-picker";
 import { successToast } from "@/utils/toast";
 import { confirmDialog } from "@/components/ui/alert";
+import { useIsMobile } from "@/lib/isMobile";
 
 interface ISearchType {
   month: number;
@@ -53,6 +54,7 @@ const Page = () => {
   const { money, refetch } = useSummary();
   const { money: amount, refetch: refetchAmount } = useGetMoney();
   const [currentPage, setCurrentPage] = useState(1);
+  const isMobile = useIsMobile();
 
   const { control: searchControl, handleSubmit: handleSearchSubmit } =
     useForm<ISearchType>();
@@ -192,9 +194,16 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full h-full flex md:flex-row flex-col md:pl-15 md:gap-10">
-      <main className="h-full px-15 md:px-0 py-5 md:w-2/3 w-full text-foreground overflow-y-scroll flex flex-col-reverse gap-5">
-        <div className="flex justify-between flex-wrap gap-y-5">
+    <div className="w-full h-full flex flex-col md:flex-row gap-5 md:gap-10 md:pl-10">
+      <main className="w-full md:w-2/3 h-full flex flex-col gap-5 overflow-y-auto px-5 py-5 text-foreground">
+        <div className="flex items-center w-fit h-fit">
+          <WalletIcon size={isMobile ? 35 : 60} />
+          <h1 className="text-2xl md:text-7xl flex ml-4">
+            {amount ? calculateBalance(amount) : 0}
+          </h1>
+        </div>
+
+        <div className="flex justify-between flex-wrap gap-5">
           {secondaryCardContent.map((item, index) => (
             <SecondaryCard
               key={index + 1}
@@ -205,14 +214,14 @@ const Page = () => {
           ))}
         </div>
 
-        <div className="rounded-md border-2 border-primary flex flex-col gap-5 p-5">
-          <div className="flex w-full items-center justify-between flex-wrap gap-4">
+        <div className="rounded-md border-2 border-primary flex flex-col gap-5 p-5 w-full">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold text-foreground">
               Your Monthly Money Recap
             </h1>
             <form
               onSubmit={handleSearchSubmit(onSearch)}
-              className="flex gap-3 items-center"
+              className="flex flex-wrap gap-3 items-center"
             >
               <ComboboxField
                 options={comboBoxOption.month}
@@ -226,7 +235,7 @@ const Page = () => {
                 placeholder="Year"
                 name="year"
               />
-              <Button size={"icon"}>
+              <Button size="icon">
                 {!loading ? (
                   <Search size={25} />
                 ) : (
@@ -235,8 +244,7 @@ const Page = () => {
               </Button>
             </form>
           </div>
-
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -261,8 +269,8 @@ const Page = () => {
                     <TableCell>{item?.amount}</TableCell>
                     <TableCell className="w-10">
                       <Button
-                        variant={"destructive"}
-                        size={"icon"}
+                        variant="destructive"
+                        size="icon"
                         onClick={() => onDelete(item.id)}
                         disabled={loading}
                       >
@@ -276,7 +284,7 @@ const Page = () => {
               <TableFooter>
                 <TableRow>
                   <TableCell colSpan={4}>Total</TableCell>
-                  <TableCell className="text-right" colSpan={2}>
+                  <TableCell colSpan={2} className="text-right">
                     {data?.length || "0"}
                   </TableCell>
                 </TableRow>
@@ -289,43 +297,38 @@ const Page = () => {
               variant="default"
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
-              size={"icon"}
+              size="icon"
             >
               <ArrowLeft />
             </Button>
-            <Button variant={"outline"} className="font-semibold">
+            <Button variant="outline" className="font-semibold">
               {currentPage} of {totalPages}
             </Button>
             <Button
               variant="default"
-              disabled={currentPage === totalPages || totalPages === 0}
               onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages || totalPages === 0}
+              size="icon"
             >
               <ArrowRight />
             </Button>
           </div>
         </div>
-          <div className="flex items-center w-fit h-fit">
-            <WalletIcon size={60} />
-            <h1 className="text-7xl flex ml-4">
-              {amount ? calculateBalance(amount) : 0}
-            </h1>
-          </div>
       </main>
 
-      <aside className="bg-secondary w-full md:w-1/3 p-5 flex flex-col h-fit md:h-full gap-5 text-foreground">
-        <h1 className="font-semibold text-2xl">Quick Add</h1>
+      <aside className="bg-secondary w-full md:w-1/3 p-5 flex flex-col md:h-full h-70 md:border-l-4 md:border-t-0 border-t-5 border-primary overflow-y-scroll gap-2 md:gap-5 text-foreground">
+        <h1 className="font-semibold text-xl md:text-2xl">Quick Add</h1>
         <form
-          className="flex flex-col gap-2"
           onSubmit={handleAddDataSubmit(onSubmit)}
+          className="flex flex-col gap-3"
         >
           <Label>Name</Label>
           <Input {...addData("name")} />
           <Label>Status</Label>
           <ComboboxField
-            options={comboBoxOption?.status}
+            options={comboBoxOption.status}
             control={addDataControl}
-            placeholder="status"
+            placeholder="Status"
             name="status"
           />
           <Label>Date</Label>
@@ -335,8 +338,8 @@ const Page = () => {
             placeholder="Choose a date"
           />
           <Label>Amount</Label>
-          <Input {...addData("amount")} type="number" />
-          <Button size={"sm"} disabled={loading}>
+          <Input type="number" {...addData("amount")} />
+          <Button size="sm" disabled={loading}>
             {!loading ? "Save" : <Loader2 className="animate-spin" />}
           </Button>
         </form>
