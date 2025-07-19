@@ -12,10 +12,12 @@ import { Label } from "@/components/ui/label";
 import type { IUpdateProfile, IUpdateProfilePicture } from "@/types/userType";
 import { confirmDialog } from "@/components/ui/alert";
 import { successToast } from "@/utils/toast";
+import { useIsMobile } from "@/lib/isMobile";
 
 const Profile = () => {
   const { user, loading, refetch } = useGetUser();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const {
     register: registerAccount,
@@ -112,20 +114,20 @@ const Profile = () => {
   return (
     <AuthGuard>
       <div className="h-screen w-screen bg-background text-foreground flex items-center justify-center md:px-0 px-5">
-        <div className="bg-secondary text-foreground w-fit h-95 shadow-xl/30 flex flex-row rounded-xl border border-border">
+        <div className="bg-secondary text-foreground w-fit h-fit md:h-95 shadow-xl/30 flex flex-col md:flex-row rounded-xl border border-border">
           <form
-            className="h-full gap-3 w-fit flex-col bg-primary text-primary-foreground rounded-l-md flex items-center justify-center px-5 md:px-10 py-10 border-r border-border"
+            className="h-full gap-3 w-fit flex-row md:flex-col bg-primary text-primary-foreground rounded-t-md md:rounded-l-md flex items-center justify-center px-5 md:px-10 py-4 md:py-10 md:border-r border-border"
             onSubmit={handleSubmitPhoto(submitProfilePicture)}
             encType="multipart/form-data"
           >
-            <div className="w-35 h-35 md:w-40 md:h-40 rounded-full border border-secondary overflow-hidden">
+            <div className="w-fit h-fit md:w-40 md:h-40 rounded-full border border-secondary overflow-hidden">
               {previewImage ? (
                 <Image
                   src={previewImage}
                   alt="preview"
-                  width={160}
-                  height={160}
-                  className="w-full h-full object-cover"
+                  width={isMobile ? 120 : 160}
+                  height={isMobile ? 120 : 160}
+                  className="md:w-full md:h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-sm text-primary-foreground">
@@ -133,17 +135,19 @@ const Profile = () => {
                 </div>
               )}
             </div>
-            <h1 className="text-xl font-semibold">{user?.username}</h1>
-            <Input
-              type="file"
-              {...registerPhoto("file")}
-              placeholder="Choose file"
-              className="text-primary-foreground border-border file:text-foreground"
-            />
-            <Button variant={"secondary"}>Submit</Button>
+            <div className="flex flex-col gap-2 md:gap-2 md:justify-center md:items-center justify-center items-start">
+              <h1 className="text-base md:text-xl font-semibold">{user?.username}</h1>
+              <Input
+                type="file"
+                {...registerPhoto("file")}
+                placeholder="Choose file"
+                className="text-primary-foreground border-border file:text-foreground"
+              />
+              <Button variant={"secondary"} className="text-sm md:text-base">Submit</Button>
+            </div>
           </form>
 
-          <div className="flex flex-col gap-y-2 w-full h-full rounded-r-md px-5 md:px-10 py-10 bg-background text-foreground">
+          <div className="flex flex-col gap-y-2 w-full h-full rounded-b-md md:rounded-r-md px-5 md:px-10 py-10 bg-background text-foreground">
             <h2 className="text-xl font-semibold mb-2">Your ID Card</h2>
             <form
               className="flex flex-col gap-y-2"

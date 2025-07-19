@@ -15,12 +15,14 @@ const Footer = () => {
 
   return (
     <div className="w-full h-full col-start-1 flex flex-col gap-5">
-     <AppIcon />
+      <AppIcon />
       <p className="text-white w-3/4 text-xs md:text-base">
         All-in-one app to manage your tasks, money, and events—efficiently.
       </p>
       <div className="flex flex-col gap-2 border-t-2 text-primary-foreground dark:text-secondary-foreground border-primary py-2">
-        <h2 className="font-semibold text-sm md:text-base">Get to know me more</h2>
+        <h2 className="font-semibold text-sm md:text-base">
+          Get to know me more
+        </h2>
         <div className="flex gap-2 md:flex-wrap w-1/2 text-sm md:text-base">
           <Badge className="text-primary-foreground">
             <Github /> Neyrrs
@@ -33,8 +35,8 @@ const Footer = () => {
           </Badge>
         </div>
       </div>
-      <div className="flex flex-col justify-end h-full pb-5 md:py-5 gap-2">
-        <div className="flex flex-col gap-1 text-white font-thin text-xl">
+      <div className="flex flex-row justify-start h-full w-full pb-5 md:py-5 gap-2">
+        <div className="flex flex-col gap-1 w-full text-white font-thin text-xl">
           {navLinks.map((item) => (
             <Link
               href={item.href}
@@ -44,6 +46,11 @@ const Footer = () => {
               {item.name}
             </Link>
           ))}
+        </div>
+        <div className="flex flex-row justify-start w-full items-end">
+          <p className="text-xs text-white font-thin">
+            © 2025 Ngatur - Neyrrs
+          </p>
         </div>
       </div>
     </div>

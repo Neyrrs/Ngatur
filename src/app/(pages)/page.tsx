@@ -94,7 +94,7 @@ export default function Home() {
           <div className="w-full justify-center bg-[#222831] pt-15 pb-5 md:px-15 px-5 gap-5 items-center md:grid md:grid-cols-2 md:grid-rows-1 flex flex-col-reverse">
             <Footer />
             <GetInTouch />
-            <p className="text-sm md:block hidden text-white font-thin">
+            <p className="text-sm hidden md:block text-white font-thin">
               © 2025 Ngatur - Neyrrs
             </p>
           </div>

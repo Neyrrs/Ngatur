@@ -22,10 +22,10 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { ArrowDownCircle, Github, Instagram } from "lucide-react";
+import Link from "next/link";
 
 const GetInTouch = () => {
   // TODO Buat menjadi sistem form yang bisa send langsung ke email saat klik button message me
-  // TODO Buat setiap social media yang keluar di drop down itu langsung link ke webnya / accountnya
   return (
     <div className="col-start-2 w-full h-full row-start-1">
       <Card className=" bg-background">
@@ -49,14 +49,16 @@ const GetInTouch = () => {
               <DropdownMenuContent className="w-20 bg-background border-primary border-1">
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
-                    Github
+                    <Link href={"https://github.com/Neyrrs"}>Github</Link>
                     <DropdownMenuShortcut>
                       <Github className="text-foreground" />
                     </DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    Instagram
+                    <Link href={"https://www.instagram.com/dwonvy"}>
+                      Instagram
+                    </Link>
                     <DropdownMenuShortcut>
                       <Instagram className="text-foreground" />
                     </DropdownMenuShortcut>
@@ -69,11 +71,16 @@ const GetInTouch = () => {
         <CardContent className="flex flex-col md:gap-4 gap-2">
           <div className="flex flex-col gap-2">
             <Label htmlFor="username">Username</Label>
-            <Input placeholder="Username" id="username" required/>
+            <Input placeholder="Username" id="username" required />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input placeholder="Example@gmail.com" type="email" id="email"required />
+            <Input
+              placeholder="Example@gmail.com"
+              type="email"
+              id="email"
+              required
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="message">Message </Label>
