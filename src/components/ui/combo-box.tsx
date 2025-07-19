@@ -58,7 +58,7 @@ export function ComboboxField<T extends FieldValues>({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="max-w-full justify-between"
+          className="max-w-full justify-between bg-transparent border-2 border-input"
         >
           {selectedLabel || placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />

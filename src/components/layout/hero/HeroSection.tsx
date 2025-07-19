@@ -5,7 +5,6 @@ import management from "@/assets/pictures/heroSection.jpg";
 const HeroSection = () => {
   return (
     <div className="py-15 gap-5 md:px-15 px-10 grid md:grid-cols-2 h-fit">
-      {/* Gambar hanya muncul di md (desktop) */}
       <div className="hidden md:block">
         <Image
           src={management}
@@ -14,7 +13,6 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Teks - Selalu tampil, tapi menyatu jika mobile */}
       <div className="text-center md:text-left text-foreground flex flex-col items-start justify-center md:p-5 px-5 gap-5 md:gap-y-10">
         <h1 className="md:text-5xl text-3xl font-bold">Still curious?</h1>
         <p className="text-sm md:text-xl text-justify">

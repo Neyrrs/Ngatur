@@ -38,7 +38,7 @@ const DatePickerField = <T extends FieldValues>({
               <Button
                 variant="outline"
                 id={id}
-                className="w-full justify-between font-normal"
+                className="w-full justify-between font-normal bg-transparent border-2 border-input"
               >
                 {field.value
                   ? new Date(field.value).toLocaleDateString()

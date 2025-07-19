@@ -13,8 +13,6 @@ import GetInTouch from "@/components/layout/hero/GetInTouch";
 import Footer from "@/components/layout/hero/Footer";
 import Link from "next/link";
 
-// TODO Buat seluruh page menjadi responsive dengan ukuran samsung galaxy S8+
-
 export default function Home() {
   const { user, loading } = useGetUser();
 
