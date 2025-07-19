@@ -19,19 +19,21 @@ const About = () => {
           <h1 className="md:text-6xl text-2xl font-semibold md:text-left text-center">
             What is Ngatur all about?
           </h1>
-          <p className="w-full md:w-3/4 text-base text-center md:text-lg">
+          <p className="w-full md:w-3/4 text-base text-center md:text-left md:text-lg">
             <strong> Ngatur </strong> is your digital life manager — track your
             finances, organize tasks, and plan events effortlessly. Designed for
             simplicity and flexibility, it empowers users to build better daily
             habits.
           </p>
         </div>
-        {isMobile == true ? <></> : (
-          <div className="md:w-full w-full">
+        {isMobile == true ? (
+          <></>
+        ) : (
+          <div className="w-full">
             <Image
               src={task}
               alt="Management picture"
-              className="rounded-full h-full md:hidden w-full border-4 border-[#471396] md:h-full object-center object-cover"
+              className="rounded-full h-full w-full border-4 border-[#471396] md:h-full object-center object-cover"
             />
           </div>
         )}

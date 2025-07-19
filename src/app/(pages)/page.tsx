@@ -51,7 +51,7 @@ export default function Home() {
           <div className="flex h-fit py-5 w-full px-5 md:px-15 border-b-2 text-black border-foreground">
             <div className="py-2 flex-col flex gap-2 w-full h-fit">
               <div className="flex flex-row justify-between w-full md:h-45">
-                <div className="flex flex-col md:h-full h-fit w-full gap-1 md:gap-2">
+                <div className="flex flex-col md:h-full h-fit w-full md:gap-2">
                   <h1 className="md:text-6xl text-2xl text-foreground font-semibold w-fit">
                     Welcome back
                   </h1>
@@ -93,10 +93,10 @@ export default function Home() {
             <About />
             <HeroSection />
           </div>
-          <div className="w-ful justify-center bg-[#222831] pt-15 pb-5 px-5 md:px-15 gap-5 items-center grid grid-cols-2 grid-rows-1">
+          <div className="w-full justify-center bg-[#222831] pt-15 pb-5 md:px-15 px-5 gap-5 items-center md:grid md:grid-cols-2 md:grid-rows-1 flex flex-col-reverse">
             <Footer />
             <GetInTouch />
-            <p className="text-sm text-white font-thin">
+            <p className="text-sm md:block hidden text-white font-thin">
               © 2025 Ngatur - Neyrrs
             </p>
           </div>

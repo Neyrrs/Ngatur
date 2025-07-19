@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { LogOutIcon, Package } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { useGetUser } from "@/hooks/useUsers";
 import axios from "axios";
@@ -20,8 +20,7 @@ import Loader from "@/components/fragments/loaders/Loader";
 import ThemeButton from "@/components/ui/buttons/ThemeButton";
 import { confirmDialog } from "@/components/ui/alert";
 import { useIsMobile } from "@/lib/isMobile";
-
-// TODO Buat alert logoutnya sesuai teksnya
+import AppIcon from "@/components/ui/icons/AppIcon";
 
 const NavigationBar = () => {
   const navigate = useRouter();
@@ -31,10 +30,7 @@ const NavigationBar = () => {
   if (loading) return <Loader />;
 
   const handleLogout = async () => {
-    const result = await confirmDialog(
-      "Want to logout?",
-      "!"
-    );
+    const result = await confirmDialog("Want to logout?", "You will be pass to login page.");
 
     if (result) {
       try {
@@ -49,10 +45,7 @@ const NavigationBar = () => {
   return (
     <div className="fixed top-0 w-screen z-20">
       <div className="flex bg-[#222831]/95 backdrop:blur-2xl z-50 text-white w-full h-15 items-center px-5 md:px-15 justify-between">
-        <Link href={"/"} className="flex gap-2 items-center">
-          <Package width={30} height={30} color="#471396" />
-          <p className="text-2xl font-medium">Ngatur</p>
-        </Link>
+        <AppIcon />
         <div className="w-fit h-full md:flex justify-center items-center text-base gap-5 hidden">
           <Link href={"/moneyTrack"}>Money Tracker</Link>
           <Link href={"/taskTrack"}>Task Tracker</Link>

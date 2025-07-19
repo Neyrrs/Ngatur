@@ -27,8 +27,8 @@ const GetInTouch = () => {
   // TODO Buat menjadi sistem form yang bisa send langsung ke email saat klik button message me
   // TODO Buat setiap social media yang keluar di drop down itu langsung link ke webnya / accountnya
   return (
-    <div className="col-start-2 row-start-1">
-      <Card className="w-full h-full bg-background">
+    <div className="col-start-2 w-full h-full row-start-1">
+      <Card className=" bg-background">
         <CardHeader>
           <CardTitle>Get in Touch</CardTitle>
           <CardDescription>
@@ -66,7 +66,7 @@ const GetInTouch = () => {
             </DropdownMenu>
           </CardAction>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col md:gap-4 gap-2">
           <div className="flex flex-col gap-2">
             <Label htmlFor="username">Username</Label>
             <Input placeholder="Username" id="username" required/>
@@ -79,7 +79,7 @@ const GetInTouch = () => {
             <Label htmlFor="message">Message </Label>
             <Textarea
               placeholder="Type your message here"
-              className="resize-none h-30"
+              className="resize-none md:h-30 h-20 text-sm"
               id="message"
               required
             />
