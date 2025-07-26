@@ -47,7 +47,7 @@ const Footer = () => {
             </Link>
           ))}
         </div>
-        <div className="flex flex-row justify-start w-full items-end">
+        <div className="md:hidden flex flex-row justify-start w-full items-end">
           <p className="text-xs text-white font-thin">
             © 2025 Ngatur - Neyrrs
           </p>
