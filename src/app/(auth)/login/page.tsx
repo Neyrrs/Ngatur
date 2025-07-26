@@ -35,12 +35,11 @@ const Login = () => {
       if (response.status === 500) {
         throw new Error("Sign in Failed: Account not found");
       }
-    } catch {
-      successToast({ title: "Sign in failed!" });
-    } finally {
       setTimeout(() => {
         navigate.replace("/");
       }, 1500);
+    } catch {
+      successToast({ title: "Sign in failed!" });
     }
   };
 
