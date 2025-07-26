@@ -38,7 +38,9 @@ const Login = () => {
     } catch {
       successToast({ title: "Sign in failed!" });
     } finally {
-      navigate.replace("/");
+      setTimeout(() => {
+        navigate.replace("/");
+      }, 1500);
     }
   };
 
@@ -51,7 +53,9 @@ const Login = () => {
             className="flex flex-col w-full h-full gap-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Label htmlFor="username" className="text-sm md:text-base">Username</Label>
+            <Label htmlFor="username" className="text-sm md:text-base">
+              Username
+            </Label>
             <Input
               {...register("username")}
               id="username"
@@ -59,7 +63,9 @@ const Login = () => {
               className="text-sm md:text-base"
               required
             />
-            <Label htmlFor="password" className="text-sm md:text-base">Password</Label>
+            <Label htmlFor="password" className="text-sm md:text-base">
+              Password
+            </Label>
             <Input
               type="password"
               id="password"
@@ -68,7 +74,9 @@ const Login = () => {
               className="text-sm md:text-base"
               required
             />
-            <Button variant={"default"} className="text-sm md:text-base">Login</Button>
+            <Button variant={"default"} className="text-sm md:text-base">
+              Login
+            </Button>
             <p className="text-xs md:text-sm text-center">
               Don’t have an account?{" "}
               <Link href={"/register"} className="underline text-primary">

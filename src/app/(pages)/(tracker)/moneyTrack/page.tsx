@@ -6,7 +6,7 @@ import { ComboboxField } from "@/components/ui/combo-box";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Table,
+  Table,  
   TableBody,
   TableCell,
   TableFooter,
